@@ -1,0 +1,34 @@
+{% set schedule = openhrs.opening.getSchedule() %}
+
+{% set periods = schedule.periods %}
+{% set exceptions = schedule.exceptions %}
+
+{# TODO: provide an option to hide exceptions from last year (or periods) and support it below #}
+
+{# TODO: create a chrono sequenced merged list for sensible presentation #}
+
+{# TODO: suppress all this if there are none coming up #}
+{# if periods|merge(exceptions) is not empty #}
+
+<h4>{{ schedule.headings.irregular }}</h4>
+
+<div class="exceptions">
+
+	{% for period in periods %}
+		{% set starts = date(period.start) %}
+		{% set finishes = date(period.finish) %}
+		<div class="period">
+			<p>{{ starts|date('l') }} <strong>{{ starts|date('F j') }}</strong>{% if 'now'|date('Y') != starts|date('Y') %}, {{ starts|date('Y') }}{% endif %} to {{ finishes|date('l') }} <strong>{{ finishes|date('F j') }}</strong>{% if 'now'|date('Y') != finishes|date('Y') %}, {{ finishes|date('Y') }} {% endif %}:</p>
+			<p style="margin-left: 2em">{{ period.description }}<em> ({{ period.name }})</em></p>
+
+			{# TODO: show any hours here, hey !!! #}
+
+		</div>
+	{% endfor %}
+
+	{% for d, exception in exceptions|ksort %}
+		{% set day = date(d) %}
+		<p>{{ day|date('l') }} <strong>{{ day|date('F j') }}</strong>{% if 'now'|date('Y') != day|date('Y') %}, {{ day|date('Y') }}{% endif %}: {% include 'partials/times_short.html.twig' with { hours: exception.hours } %}{% if exception.comment is defined %} <em>({{ exception.comment }})</em>{% endif %}</p>
+	{% endfor %}
+
+</div>

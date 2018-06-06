@@ -1,0 +1,33 @@
+{# this partial template expects open_hours to be passed in as type \Grav\Plugin\Opnhrs #}
+{{ dump(open_hours) -}}
+
+{% macro niceOpenings(schedule, range_symbol, delimiter) -%}
+	{% spaceless %}
+		{% set output = [] %}
+		{% for opening in schedule %}
+			{% set output = output|merge([opening.opens ~ range_symbol|default('-') ~ opening.shuts]) %}
+		{% endfor %}
+		{{ output|join(delimiter|default(', '))|trim }}
+	{% endspaceless %}
+{%- endmacro niceOpenings %}
+
+{%- import _self as transforms -%}
+
+{% spaceless %}
+{% set hours_formatted = openhrs.opening.formatSchedule(open_hours.hours, 'g.ia', ['.i']) %}
+{% if open_hours.open %} {# open today o-s[, o-s] #}
+	{{ 'PLUGIN_OPAQUE.OPEN_TODAY'|t }} {{ transforms.niceOpenings(hours_formatted) }}
+{% else %}
+	{% if open_hours.open_later_on_day -%} {# open today o-s[,o-s] #}
+		{{ 'PLUGIN_OPAQUE.HOURS_TODAY'|t }} {{ transforms.niceOpenings(hours_formatted) }}
+	{% else %}
+		{% if open_hours.until|date('Ymd') == 'now'|date_modify('+1 day')|date('Ymd') %} {# 'tomorrow' #}
+			{{ 'PLUGIN_OPAQUE.OPENS_TOMORROW'|t }} {{ open_hours.until|date('g.ia')|replace({'.00':''}) }}
+		{% else %} {# next open [date, time] #}
+			{{ 'PLUGIN_OPAQUE.OPENS_NEXT'|t }} {{ open_hours.until|date('D jS, g.ia')|replace({'.00':''}) }} {# FIXME: this pattern isn't internationalised - try using the undocumented filter open_hours.until|nicetime(true) #}
+		{% endif %}
+	{% endif %}
+{% endif %}
+
+{{ dump(transforms.niceOpenings(open_hours.debug)) }}
+{% endspaceless %}

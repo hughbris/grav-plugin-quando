@@ -1,0 +1,80 @@
+hours:
+  opening:
+    timezone: "Pacific/Auckland"
+    language: en
+    completed_until: "2018-01-15"
+    regular:
+      monday:
+        - opens: "09:00"
+          shuts: "12:30"
+        - opens: "13:00"
+          shuts: "17:00"
+      tuesday:
+        - opens: "08:00"
+          shuts: "12:30"
+        - opens: "13:00"
+          shuts: "18:00"
+    exceptions:
+      '2017-10-23':
+        hours: []
+        comment: 'Labour Day'
+      '2017-11-17':
+        hours: []
+        comment: 'Canterbury Anniversary Day'
+      '2018-02-06':
+        hours: []
+        comment: 'Waitangi Day'
+      '2018-03-06':
+        hours: # example multi-period below
+          - opens: "09:00"
+            shuts: "12:00"
+          - opens: "13:00"
+            shuts: "16:00"
+        comment: 'Staff meeting day'
+      '2018-03-30':
+        hours: []
+        comment: 'Good Friday'
+      '2018-04-02':
+        hours: []
+        comment: 'Easter Monday'
+      '2018-04-25':
+        hours: []
+        comment: 'ANZAC Day'
+      '2018-06-04':
+        hours: []
+        comment: "Queen's Birthday"
+      '2018-10-22':
+        hours: []
+        comment: 'Labour Day'
+      '2018-11-16':
+        hours: []
+        comment: 'Canterbury Anniversary Day'
+    periods:
+      - start: "2017-12-16"
+        finish: "2018-01-14"
+        description: Closed
+        name: "Summer break"
+        regular: []
+      - start: "2017-12-16"
+        finish: "2018-01-14"
+        description: 'Reduced hours'
+        name: "Christmas wind down"
+        regular:
+          wednesday:
+            - opens: "10:00"
+              shuts: "13:00"
+          thursday:
+            - opens: "08:00"
+              shuts: "12:30"
+            - opens: "13:00"
+              shuts: "15:30"
+          sunday:
+            - opens: "08:00"
+              shuts: "12:30"
+        exceptions:
+          '2018-12-25':
+            hours: []
+            comment: 'Christmas Day'
+    headings:
+      regular: 'Regular hours'
+      irregular: 'Special days'

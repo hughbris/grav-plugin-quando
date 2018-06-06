@@ -1,0 +1,31 @@
+name: Opaque
+version: 0.2.0
+description: 'Stores and exposes business opening and service-specific hours to Grav/Twig. Provides some starter templates.'
+icon: plug
+author:
+  name: Hugh Barnes
+  email: dev@hubns.com
+homepage: https://github.com/hughbris/grav-plugin-opaque
+demo: http://demo.example.com
+keywords: grav, plugin, etc
+bugs: https://github.com/hughbris/grav-plugin-opaque/issues
+docs: https://github.com/hughbris/grav-plugin-opaque/blob/develop/README.md
+license: MIT
+
+form:
+  validation: strict
+  fields:
+    enabled:
+      type: toggle
+      label: Plugin status
+      highlight: 1
+      default: 0
+      options:
+        1: Enabled
+        0: Disabled
+      validate:
+        type: bool
+    test:
+      type: time
+      label: Time?
+      highlight: 1

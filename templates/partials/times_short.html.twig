@@ -1,0 +1,7 @@
+{% spaceless %}
+{% for block in hours %}
+	{{ block.opens|briefTime }} – {{ block.shuts|briefTime }}{% if not loop.last %}, {% endif %}
+{% else %}
+	Closed
+{% endfor %}
+{% endspaceless %}

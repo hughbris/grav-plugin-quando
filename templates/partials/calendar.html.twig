@@ -1,0 +1,43 @@
+{% set schedules = openhrs.opening.schedulesWeek(date()) %}
+{{ dump(schedules) }}
+
+<!-- googleoff: index -->
+<table class="hours calendar">
+	<thead>
+		<tr>
+			<th scope="col">Day</th>
+			<th scope="col">Hours</th>
+		</tr>
+	</thead>
+	<tbody>
+
+	{% import 'partials/current_status.html.twig' as transforms %}
+
+	{% for schedule in schedules %}
+
+		{% set title = NULL %}
+		{% set classes = [] %}
+
+		{% if schedule.day == date() %}
+			{% set title = 'PLUGIN_OPAQUE.TODAY'|t|capitalize %}
+			{% set classes = classes|merge( ['current'] ) %}
+			{% set classes = classes|merge( [ (openhrs.opening.isOpen ? 'open' : 'closed') ] ) %}
+		{% endif %}
+
+		{% set attr_title = ( title is null ? '' : ' title="' ~ title ~ '"' ) %}
+		{% set attr_class = ( classes is empty ? '' : ' class="' ~ classes|join(' ')|trim ~ '"' ) %}
+
+		{% set openings = ( schedule.schedule is empty ? 'Closed' : transforms.niceOpenings(openhrs.opening.formatSchedule(schedule.schedule, 'g.ia', ['.i'])) ) %}
+
+		<tr{{ attr_title }}{{ attr_class }}>
+			<th scope="row">{{ schedule.day|date('M j, D') }}</th>  {# FIXME: string need internationalising #}
+			<td>{{ openings }}</td>
+		</tr>
+
+	{% endfor %}
+
+	</tbody>
+</table>
+<!-- googleon: index -->
+
+{# TODO: pager to flick through dates until we hit completed_until #}

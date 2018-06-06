@@ -1,0 +1,27 @@
+en:
+  PLUGIN_OPAQUE:
+    TITLE: Opaque Plugin
+    OPENS_TOMORROW: "Opens tomorrow"
+    HOURS_TODAY: "Today's hours"
+    OPEN_TODAY: "Open today"
+    OPENS_NEXT: "Next open"
+    OPEN: "Open"
+    CLOSED: "Closed"
+    OPEN_DESCR: "Open now"
+    CLOSED_DESCR: "Closed right now"
+    OPENS_LATER: "Opening at"
+    OPENS_ON: "Opening on"
+    CLOSES_LATER: "Closing at"
+    CLOSES_ON: "Closing on"
+    OPENING_HOURS: "Opening hours"
+    ALL_OPENING_HOURS: "All opening hours"
+    YESTERDAY: "Yesterday"
+    TODAY: "Today"
+    TOMORROW: "Tomorrow"
+    TOMORROW_PLUS_1: "Day after tomorrow"
+    PANEL_WIDGET:
+      HEADING: "Hours this week"
+      COL_DAY: "Day"
+      COL_HOURS: "Hours"
+    DAYS_OF_WEEK: [Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday]
+
