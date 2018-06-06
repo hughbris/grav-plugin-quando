@@ -59,5 +59,5 @@ I had this in my original composer.json for some reason: https://github.com/spat
 
 ## To Do
 
-It's all supposed to be in the [issues](./grav-plugin-opaque/issues).
+It's all supposed to be in the Issues. (Github make it non-trivial for me to reliably link there in any relative way. I'm sorry for that unfortunate fail.)
 
