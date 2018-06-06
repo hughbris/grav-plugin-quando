@@ -45,9 +45,9 @@ Configure the hours through the Admin plugin is probably simplest. Or copy the [
 
 Copy, customise, and include one of the sample templates, probably start with a simple partial:
 
-* [This week's hours](templates/partial/panel_hours.html.twig) web panel
-* [Regular schedule](templates/partial/hours.html.twig)
-* [Exceptions list](templates/partial/hours_exceptions.html.twig)
+* [This week's hours](templates/partials/panel_hours.html.twig) web panel
+* [Regular schedule](templates/partials/hours.html.twig)
+* [Exceptions list](templates/partials/hours_exceptions.html.twig)
 
 Examples in the wild:
 
@@ -59,5 +59,5 @@ I had this in my original composer.json for some reason: https://github.com/spat
 
 ## To Do
 
-- [ ] It's all supposed to be in the [issues](issues).
+It's all supposed to be in the [issues](grav-plugin-opaque/issues).
 
