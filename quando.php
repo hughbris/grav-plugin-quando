@@ -5,10 +5,10 @@ use Grav\Common\Plugin;
 use RocketTheme\Toolbox\Event\Event;
 
 /**
- * Class OpaquePlugin
+ * Class QuandoPlugin
  * @package Grav\Plugin
  */
-class OpaquePlugin extends Plugin
+class QuandoPlugin extends Plugin
 {
     /**
      * @return array
@@ -59,7 +59,7 @@ class OpaquePlugin extends Plugin
 
     public function initializePlugin() {
 		// NB: $services_times vs. $service_times !!
-		$services_times = $this->config['plugins']['opaque']['hours'];
+		$services_times = $this->config['plugins']['quando']['hours'];
 
 		$openhrs = [];
 		foreach($services_times as $name => $service_times) {

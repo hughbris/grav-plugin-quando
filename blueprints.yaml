@@ -1,15 +1,15 @@
-name: Opaque
-version: 0.2.0
+name: Quando
+version: 0.3.0
 description: 'Stores and exposes business opening and service-specific hours to Grav/Twig. Provides some starter templates.'
 icon: plug
 author:
   name: Hugh Barnes
   email: dev@hubns.com
-homepage: https://github.com/hughbris/grav-plugin-opaque
-demo: http://demo.example.com
-keywords: grav, plugin, etc
-bugs: https://github.com/hughbris/grav-plugin-opaque/issues
-docs: https://github.com/hughbris/grav-plugin-opaque/blob/develop/README.md
+homepage: https://github.com/hughbris/grav-plugin-quando
+# demo: http://demo.example.com
+keywords: grav, plugin, opening hours
+bugs: https://github.com/hughbris/grav-plugin-quando/issues
+docs: https://github.com/hughbris/grav-plugin-quando/blob/develop/README.md
 license: MIT
 
 form:

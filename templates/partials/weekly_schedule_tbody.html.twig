@@ -6,7 +6,7 @@
 		{% set title = NULL %}
 		{% set classes = [] %}
 		{% if schedule.day == date() %}
-			{% set title = 'PLUGIN_OPAQUE.TODAY'|t|capitalize %}
+			{% set title = 'PLUGIN_QUANDO.TODAY'|t|capitalize %}
 			{% set classes = classes|merge( ['current'] ) %}
 			{% set classes = classes|merge( [ (openhrs.opening.isOpen ? 'open' : 'closed') ] ) %}
 			{% if 'closed' in classes %}
@@ -16,11 +16,11 @@
 				{% endif %}
 			{% endif %}
 		{% elseif schedule.day == 'now'|date_modify('-1 day') %}
-			{% set title = 'PLUGIN_OPAQUE.YESTERDAY'|t|capitalize %}
+			{% set title = 'PLUGIN_QUANDO.YESTERDAY'|t|capitalize %}
 		{% elseif schedule.day == 'now'|date_modify('+1 day') %}
-			{% set title = 'PLUGIN_OPAQUE.TOMORROW'|t|capitalize %}
+			{% set title = 'PLUGIN_QUANDO.TOMORROW'|t|capitalize %}
 		{% elseif schedule.day == 'now'|date_modify('+2 day') %}
-			{% set title = 'PLUGIN_OPAQUE.TOMORROW_PLUS_1'|t|capitalize %}
+			{% set title = 'PLUGIN_QUANDO.TOMORROW_PLUS_1'|t|capitalize %}
 		{% endif %}
 		{% set attr_title = ( title is null ? '' : ' title="' ~ title ~ '"' ) %}
 		{% set attr_class = ( classes is empty ? '' : ' class="' ~ classes|join(' ')|trim ~ '"' ) %}

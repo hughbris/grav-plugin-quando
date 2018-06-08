@@ -1,6 +1,6 @@
 en:
-  PLUGIN_OPAQUE:
-    TITLE: Opaque Plugin
+  PLUGIN_QUANDO:
+    TITLE: Quando Plugin
     OPENS_TOMORROW: "Opens tomorrow"
     HOURS_TODAY: "Today's hours"
     OPEN_TODAY: "Open today"

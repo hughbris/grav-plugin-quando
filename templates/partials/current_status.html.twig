@@ -16,15 +16,15 @@
 {% spaceless %}
 {% set hours_formatted = openhrs.opening.formatSchedule(open_hours.hours, 'g.ia', ['.i']) %}
 {% if open_hours.open %} {# open today o-s[, o-s] #}
-	{{ 'PLUGIN_OPAQUE.OPEN_TODAY'|t }} {{ transforms.niceOpenings(hours_formatted) }}
+	{{ 'PLUGIN_QUANDO.OPEN_TODAY'|t }} {{ transforms.niceOpenings(hours_formatted) }}
 {% else %}
 	{% if open_hours.open_later_on_day -%} {# open today o-s[,o-s] #}
-		{{ 'PLUGIN_OPAQUE.HOURS_TODAY'|t }} {{ transforms.niceOpenings(hours_formatted) }}
+		{{ 'PLUGIN_QUANDO.HOURS_TODAY'|t }} {{ transforms.niceOpenings(hours_formatted) }}
 	{% else %}
 		{% if open_hours.until|date('Ymd') == 'now'|date_modify('+1 day')|date('Ymd') %} {# 'tomorrow' #}
-			{{ 'PLUGIN_OPAQUE.OPENS_TOMORROW'|t }} {{ open_hours.until|date('g.ia')|replace({'.00':''}) }}
+			{{ 'PLUGIN_QUANDO.OPENS_TOMORROW'|t }} {{ open_hours.until|date('g.ia')|replace({'.00':''}) }}
 		{% else %} {# next open [date, time] #}
-			{{ 'PLUGIN_OPAQUE.OPENS_NEXT'|t }} {{ open_hours.until|date('D jS, g.ia')|replace({'.00':''}) }} {# FIXME: this pattern isn't internationalised - try using the undocumented filter open_hours.until|nicetime(true) #}
+			{{ 'PLUGIN_QUANDO.OPENS_NEXT'|t }} {{ open_hours.until|date('D jS, g.ia')|replace({'.00':''}) }} {# FIXME: this pattern isn't internationalised - try using the undocumented filter open_hours.until|nicetime(true) #}
 		{% endif %}
 	{% endif %}
 {% endif %}

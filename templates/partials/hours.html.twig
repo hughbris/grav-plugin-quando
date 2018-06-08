@@ -34,7 +34,7 @@
 			{# dump (schedule) #}
 			{% set openings = ( schedule is empty ? ' <span property="description">Closed</span>' : transforms.microdataOpenings(schedule) ) %} {# transforms.microdataOpenings(schedule) #}
 			<tr property="openingHoursSpecification" typeof="OpeningHoursSpecification">
-				<th property="dayOfWeek" typeof="DayOfWeek" content="https://schema.org/{{ 'PLUGIN_OPAQUE.DAYS_OF_WEEK'|tav(day,'en') }}" scope="row">{{ 'PLUGIN_OPAQUE.DAYS_OF_WEEK'|tav(day)|pluralize }}</th>
+				<th property="dayOfWeek" typeof="DayOfWeek" content="https://schema.org/{{ 'PLUGIN_QUANDO.DAYS_OF_WEEK'|tav(day,'en') }}" scope="row">{{ 'PLUGIN_QUANDO.DAYS_OF_WEEK'|tav(day)|pluralize }}</th>
 			<td>{{ openings }}</td>
 		</tr>
 		{% endfor %}

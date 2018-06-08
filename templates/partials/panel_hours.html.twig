@@ -1,21 +1,21 @@
-{% if config.plugins.opaque.enabled %}
+{% if config.plugins.quando.enabled %}
 <div class="panel hours">
 	<div class="highlight">
-		<h4>{{ 'PLUGIN_OPAQUE.PANEL_WIDGET.HEADING'|t|capitalize }}</h4>
+		<h4>{{ 'PLUGIN_QUANDO.PANEL_WIDGET.HEADING'|t|capitalize }}</h4>
 	</div>
 
 	<div class="content">
 		<table class="data">
 			<thead>
 				<tr>
-					<th scope="col">{{ 'PLUGIN_OPAQUE.COL_DAY.HEADING'|t|capitalize }}</th>
-					<th scope="col">{{ 'PLUGIN_OPAQUE.COL_HOURS.HEADING'|t|capitalize }}</th>
+					<th scope="col">{{ 'PLUGIN_QUANDO.PANEL_WIDGET.COL_DAY'|t|capitalize }}</th>
+					<th scope="col">{{ 'PLUGIN_QUANDO.PANEL_WIDGET.COL_HOURS'|t|capitalize }}</th>
 				</tr>
 			</thead>
 			{% include 'partials/weekly_schedule_tbody.html.twig' with {'context': -1} %}
 		</table>
 
-		{% set hours_url = '/about/opening' %}
+		{% set hours_url = '/demo' %}
 		{% if page.url|trim != hours_url %}
 		<ul class="related options">
 			<li><a rel="more" href="{{ hours_url }}">Our opening hours</a></li>
