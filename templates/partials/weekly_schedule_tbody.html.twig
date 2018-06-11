@@ -26,7 +26,7 @@
 		{% set attr_class = ( classes is empty ? '' : ' class="' ~ classes|join(' ')|trim ~ '"' ) %}
 		{% set openings = ( schedule.schedule is empty ? 'Closed' : transforms.niceOpenings(openhrs.opening.formatSchedule(schedule.schedule, 'g.ia', ['.i'])) ) %}
 		<tr{{ attr_title }}{{ attr_class }}>
-			<th scope= "row">{{ schedule.day|date('F j') }}, <abbr title="{{ schedule.day|date('l') }}" class="day">{{ schedule.day|date('D') }}</abbr></th>  {# FIXME: those strings need internationalising #}
+			<th scope= "row"><strong class="day">{{ schedule.day|date('l') }}</strong> <em class="date">{{ schedule.day|date('F j') }}</em></th>  {# FIXME: those strings need internationalising #}
 		<td>{{ openings }}</td>
 	</tr>
 	{% endfor %}
