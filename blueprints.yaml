@@ -1,12 +1,12 @@
 name: Quando
-version: 0.3.0
+version: 0.3.1
 description: 'Stores and exposes business opening and service-specific hours to Grav/Twig. Provides some starter templates.'
 icon: plug
 author:
   name: Hugh Barnes
   email: dev@hubns.com
 homepage: https://github.com/hughbris/grav-plugin-quando
-# demo: http://demo.example.com
+demo: https://behold.metamotive.co.nz/grav-plugin-quando
 keywords: grav, plugin, opening hours
 bugs: https://github.com/hughbris/grav-plugin-quando/issues
 docs: https://github.com/hughbris/grav-plugin-quando/blob/develop/README.md

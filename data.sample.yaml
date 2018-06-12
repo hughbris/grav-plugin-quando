@@ -1,8 +1,8 @@
 hours:
   opening:
     timezone: "Pacific/Auckland"
-    language: en
-    completed_until: "2018-01-15"
+    language: en # TODO: this should override any translations in the plugin's templates
+    completed_until: "2018-11-16" # TODO: use this to set alerts for maintainers
     regular:
       monday:
         - opens: "09:00"
@@ -14,49 +14,43 @@ hours:
           shuts: "12:30"
         - opens: "13:00"
           shuts: "18:00"
+      thursday:
+        - opens: "10:00"
+          shuts: "14:15"
     exceptions:
-      '2017-10-23':
+      '2018-05-12':
         hours: []
-        comment: 'Labour Day'
-      '2017-11-17':
+        comment: 'Banks Peninsula Awareness Day'
+      '2018-06-06':
         hours: []
-        comment: 'Canterbury Anniversary Day'
-      '2018-02-06':
+        comment: "Emporer Quinoa's birthday"
+      '2018-06-18':
         hours: []
-        comment: 'Waitangi Day'
-      '2018-03-06':
+        comment: 'Whacking Day'
+      '2018-07-25':
+        hours: []
+        comment: 'Deliverance Anniversary'
+      '2018-08-24':
         hours: # example multi-period below
           - opens: "09:00"
             shuts: "12:00"
           - opens: "13:00"
             shuts: "16:00"
-        comment: 'Staff meeting day'
-      '2018-03-30':
+        comment: 'Staff hoedown'
+      '2018-10-15':
         hours: []
-        comment: 'Good Friday'
-      '2018-04-02':
+        comment: 'Wage slavery acceptance day'
+      '2018-11-19':
         hours: []
-        comment: 'Easter Monday'
-      '2018-04-25':
-        hours: []
-        comment: 'ANZAC Day'
-      '2018-06-04':
-        hours: []
-        comment: "Queen's Birthday"
-      '2018-10-22':
-        hours: []
-        comment: 'Labour Day'
-      '2018-11-16':
-        hours: []
-        comment: 'Canterbury Anniversary Day'
+        comment: 'Example day'
     periods:
-      - start: "2017-12-16"
-        finish: "2018-01-14"
+      - start: "2018-12-22"
+        finish: "2018-01-12"
         description: Closed
         name: "Summer break"
         regular: []
-      - start: "2017-12-16"
-        finish: "2018-01-14"
+      - start: "2018-12-17"
+        finish: "2018-12-21"
         description: 'Reduced hours'
         name: "Christmas wind down"
         regular:
@@ -74,7 +68,7 @@ hours:
         exceptions:
           '2018-12-25':
             hours: []
-            comment: 'Christmas Day'
+            comment: 'Christmas party!'
     headings:
       regular: 'Regular hours'
       irregular: 'Special days'
