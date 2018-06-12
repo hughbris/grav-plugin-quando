@@ -62,6 +62,7 @@ Copy, customise, and include one of the sample templates, probably start with a 
 Examples in the wild:
 
 * [QE2 Dental opening hours](https://qe2dental.co.nz/about/opening) page
+* [Quando's official demo](http://behold.metamotive.co.nz/quando)
 
 ## Credits
 
