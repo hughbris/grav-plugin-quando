@@ -229,10 +229,10 @@ class Opnhrs {
 	private function nextChange($dto, $hours) {
 		$timeOfDay = $dto->format('H:i');
 
-		foreach($hours as $seq => $opening) {
+		foreach($hours as $opening) {
 
-			// test for easy case where $timeOfDay is before the first open
-			if ( $seq == 0 AND $timeOfDay < $opening['opens'] ) {
+			// test for easy case where $timeOfDay is before this opening
+			if ( $timeOfDay < $opening['opens'] ) {
 				return \DateTime::createFromFormat('Y-m-d H:i', $dto->format('Y-m-d ') . $opening['opens']);
 			}
 
