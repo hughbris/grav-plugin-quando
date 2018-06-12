@@ -4,6 +4,16 @@ The **Quando** Plugin is for [Grav CMS](http://github.com/getgrav/grav).
 
 It exposes business opening hours and other service hours to Grav as a Twig hash. It provides starter templates you might want to copy into your theme, customise, and include.
 
+## Is this fit for your purposes?
+
+There are a few real world scenarios which are not supported yet by the plugin and some bugs affecting some scenarios. Be aware of these issues and make sure they don't affect you before you get too far here:
+
+* [Next opening is incorrect during closed periods of multi-opening days (#8)](https://github.com/hughbris/grav-plugin-quando/issues/8)
+* [No real time refreshes yet #5](https://github.com/hughbris/grav-plugin-quando/issues/5)
+* [Irregular periods containing service hours don't show the hours yet (#4)](https://github.com/hughbris/grav-plugin-quando/issues/4)
+* [Incomplete/untested microformats support (#3)](https://github.com/hughbris/grav-plugin-quando/issues/3)
+* [YAML configuration is currently by hand (#2)](https://github.com/hughbris/grav-plugin-quando/issues/2)
+
 ## Installation
 
 Installing the Quando plugin can be done in one of two ways. The GPM (Grav Package Manager) installation method enables you to quickly and easily install the plugin with a simple terminal command, while the manual method enables you to do so via a zip file.
