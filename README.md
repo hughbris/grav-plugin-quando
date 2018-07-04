@@ -8,8 +8,7 @@ It exposes business opening hours and other service hours to Grav as a Twig hash
 
 There are a few real world scenarios which are not supported yet by the plugin and some bugs affecting some scenarios. Be aware of these issues and make sure they don't affect you before you get too far here:
 
-* [Next opening is incorrect during closed periods of multi-opening days (#8)](https://github.com/hughbris/grav-plugin-quando/issues/8)
-* [No real time refreshes yet #5](https://github.com/hughbris/grav-plugin-quando/issues/5)
+* [No real time refreshes yet (#5)](https://github.com/hughbris/grav-plugin-quando/issues/5)
 * [Irregular periods containing service hours don't show the hours yet (#4)](https://github.com/hughbris/grav-plugin-quando/issues/4)
 * [Incomplete/untested microformats support (#3)](https://github.com/hughbris/grav-plugin-quando/issues/3)
 * [YAML configuration is currently by hand (#2)](https://github.com/hughbris/grav-plugin-quando/issues/2)
@@ -59,7 +58,37 @@ Copy, customise, and include one of the sample templates, probably start with a 
 * [Regular schedule](templates/partials/hours.html.twig)
 * [Exceptions list](templates/partials/hours_exceptions.html.twig)
 
-Examples in the wild:
+### API
+
+This is subject to imminent change because of [new nomenclature](https://github.com/hughbris/grav-plugin-quando/issues/6#issuecomment-397140502) and data restructuring. It's only available in PHP and Twig at present, though there are plans to [expose the API through shortcodes](https://github.com/hughbris/grav-plugin-quando/issues/7).
+
+#### Opnhrs object
+
+Exposed to Twig as 'openhrs', an indexed array with members named for each property, e.g. 'openhrs.opening'.
+
+_TO BE RENAMED to 'Quando' or 'ServiceTimes'_
+
+##### Properties
+
+* _Calendar_ **schedule**: holds the loaded _calendar_ data for the class instance. _TO BE RENAMED to 'calendar'_
+
+##### Methods
+
+* _Opnhrs_ **__construct**(_Calendar_ service): instantiate and load a single _calendar_'s data
+* _boolean_ **opensOn**(_string_ day_name, _RegularTimetable_ schedule(=NULL)): return whether service times are in _schedule_, which defaults to the current calendar's regular _timetable_. _TO BE RENAMED 'availableOn'_
+* _boolean_ **openAt**(_DateTime_ dto): Returns whether the service is available at _dto_ in the current _calendar_. _TO BE RENAMED 'availableAt'_
+* _Schedule_ **hoursOn**(_string_ day_name, _RegularTimetable_ schedule(=NULL)): Returns the _schedule_ for _day_name_ in _schedule_. _TO BE RENAMED 'scheduleOn'_
+* _string_ **briefTime**(_string_ timeOfDay, _string_ pattern(='g.ia'), _array_ truncateZeroComponents(=['.i'])): Convert 24 hour time string to _pattern_, leaving off the components listed in _truncateZeroComponents_ if they are zero. (static) (exposed as Twig filter)
+* _array_ **formatSchedule**(_Schedule_ schedule,  _string_ pattern, _array_ truncateZeroComponents(=[])): Format all the timestamps in _schedule_ to `briefTime`. (static)
+* _array_ **statusAt**(_DateTime_ dto, _boolean_ includeNext(=TRUE)): Return indexed information about service status at _dto_, and optionally after the next status change.
+* _boolean_ **isOpen**(): The service is currently available. _TO BE RENAMED 'isAvailable'_
+* _DateTime_ **nextChange**(_DateTime_ dto, _Schedule_ hours(=NULL)): Returns the time of next status change after _dto_, _hours_ can be passed as a convenience.
+* _array_ **schedulesAfter**(_DateTime_ start_dto, _integer_ days_duration): Return a date-indexed array of schedules from _days_duration_ days after _dto_.
+* _array_ **schedulesWeek**(_DateTime_ start_dto, _integer_ days_context(=NULL)): Return a date-indexed array of 7 schedules from _days_context_ days before _start_dto_.
+* _Timetable_ **regularSchedule**(): Return the `regular` _timetable_ for the current _calendar_. _TO BE RENAMED 'regularTimetable'_
+* _Timetable_ **getSchedule**(_string_ member(=NULL)): Return every _timetable_ in the curent _calendar_, or just the one named "_member_". _TO BE RENAMED 'getTimetable'_
+
+## Examples in the wild
 
 * [QE2 Dental opening hours](https://qe2dental.co.nz/about/opening) page
 * [Quando's official demo](http://behold.metamotive.co.nz/quando)
