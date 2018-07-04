@@ -186,11 +186,11 @@ class Opnhrs {
 		return $to->format($mod_pattern);
     }
 
-	public function formatSchedule($schedule, $pattern, $truncateZeroComponents=[]) {
+	public static function formatSchedule($schedule, $pattern, $truncateZeroComponents=[]) {
 		$ret = [];
 		foreach ($schedule as $opening) {
 			foreach ($opening as $activity => $timeOfDay) {
-				$opening[$activity] = $this->briefTime($timeOfDay, $pattern, $truncateZeroComponents);
+				$opening[$activity] = self::briefTime($timeOfDay, $pattern, $truncateZeroComponents);
 			}
 			$ret[] = $opening;
 		}
@@ -205,11 +205,6 @@ class Opnhrs {
 		$ret['open'] = $this->withinHours($dto, $ret['hours']);
 		$ret['open_on_day'] = !empty($ret['hours']); // this isn't worth a function - "tradingDay" ??
 		$ret['open_later_on_day'] = $this->opensLaterOnDay($dto, $ret['hours']);
-		// $ret['debug'] = [$dto, $ret['hours']];
-		// $ret['testsched'] = [['opens'=>'00:10','shuts'=>'18:00'],['opens'=>'19:20','shuts'=>'21:00']];
-		// $ret['debug'] = $this->formatSchedule($ret['testsched'], 'g.ia', ['.i']);
-		// $ret['debug'] = $this->schedulesAfter($dto, 2);
-		// $ret['debug'] = $this->schedulesWeek($dto, -1);
 		if ($includeNext) {
 			$ret['until'] = $this->nextChange($dto, $ret['hours']);
 		}
@@ -226,7 +221,10 @@ class Opnhrs {
 		return $this->openAt($dto);
 	}
 
-	private function nextChange($dto, $hours) {
+	private function nextChange($dto, $hours=NULL) {
+		if (is_null($hours)) {
+			$this->scheduleAt($dto);
+		}
 		$timeOfDay = $dto->format('H:i');
 
 		foreach($hours as $opening) {
@@ -309,14 +307,6 @@ class Opnhrs {
 
 	public function regularSchedule() {
 		return $this->schedule['regular'];
-		/*
-		$ret = [];
-		foreach (array_keys(self::DOW) as $day_name) {
-			$ret[] = $this->hoursOn($day_name);
-		}
-
-		return $ret;
-		*/
 	}
 
 	public function getSchedule($member=NULL) {
