@@ -65,7 +65,6 @@ class QuandoPlugin extends Plugin
 		foreach($services_times as $name => $service_times) {
 			$calendars[$name] = new ServiceTimes($service_times);
 		}
-
 		$this->grav['twig']->twig_vars['openhrs'] = $calendars; // TODO: deprecated name
 		$this->grav['twig']->twig_vars['quando'] = $calendars;
 	}
@@ -134,6 +133,8 @@ class ServiceTimes {
 		]; // from PHP 7, we should be able to do this like const DOW = array_flip(['sunday','monday',....]);
 
 	function __construct($calendar) {
+		global $grav;
+		$this->grav = $grav;
 		$this->load($calendar);
 		return $this;
 	}
@@ -144,11 +145,20 @@ class ServiceTimes {
 		// TODO - validate the times ??
 	}
 
-	public function opensOn($day_name, $calendar=NULL) {
+	private function deprecatedMethodWarning($method_name) {
+		$this->grav['debugger']->addMessage("Call to deprecated $method_name rendering template \"{$this->grav['page']->template()}\"");
+	}
+
+	public function availableOn($day_name, $calendar=NULL) {
 		if (is_null($calendar)) {
 			$calendar = $this->calendar['regular'];
 		}
 		return ( array_key_exists($day_name, $calendar) AND !empty($calendar[$day_name]) );
+	}
+
+	public function opensOn($day_name, $calendar=NULL) { // TODO: deprecated name
+		$this->deprecatedMethodWarning(__METHOD__);
+		return $this->availableOn($day_name, $calendar);
 	}
 
 	public function hoursOn($day_name, $calendar=NULL) {
