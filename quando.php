@@ -161,7 +161,7 @@ class ServiceTimes {
 		return $this->availableOn($day_name, $calendar);
 	}
 
-	public function hoursOn($day_name, $calendar=NULL) {
+	public function scheduleOn($day_name, $calendar=NULL) {
 		if (is_null($calendar)) {
 			$calendar = $this->calendar['regular'];
 		}
@@ -173,6 +173,11 @@ class ServiceTimes {
 		}
 
 		return $ret;
+	}
+
+	public function hoursOn($day_name, $calendar=NULL) { // TODO: deprecated name
+		$this->deprecatedMethodWarning(__METHOD__);
+		return $this->scheduleOn($day_name, $calendar);
 	}
 
 	private function opensLaterOnDay($dto, $hours) { // "beforeCOB" ??
@@ -223,13 +228,23 @@ class ServiceTimes {
 		return $ret;
 	}
 
-	public function openAt($dto) {
+	public function availableAt($dto) {
 		return $this->statusAt($dto, FALSE)['open'];
 	}
 
-	public function isOpen() {
+	public function openAt($dto) {  // TODO: deprecated name
+		$this->deprecatedMethodWarning(__METHOD__);
+		return $this->availableAt($dto);
+	}
+
+	public function isAvailable() {
 		$dto = new \DateTime();
-		return $this->openAt($dto);
+		return $this->availableAt($dto);
+	}
+
+	public function isOpen() {  // TODO: deprecated name
+		$this->deprecatedMethodWarning(__METHOD__);
+		return $this->isAvailable();
 	}
 
 	private function nextChange($dto, $hours=NULL) {
@@ -316,20 +331,30 @@ class ServiceTimes {
 		return $ret;
 	}
 
-	public function regularSchedule() {
+	public function regularTimetable() {
 		return $this->calendar['regular'];
 	}
 
-	public function getSchedule($member=NULL) {
-		if (is_null($member)) {
+	public function regularSchedule() { // TODO: deprecated name
+		$this->deprecatedMethodWarning(__METHOD__);
+		return $this->regularTimetable();
+	}
+
+	public function getTimetable($timetable=NULL) {
+		if (is_null($timetable)) {
 			return $this->calendar;
 		}
-		elseif (!array_key_exists($member, $this->calendar)) {
+		elseif (!array_key_exists($timetable, $this->calendar)) {
 			return [];
 		}
 		else {
-			return($this->calendar[$member]);
+			return($this->calendar[$timetable]);
 		}
+	}
+
+	public function getSchedule($member=NULL) { // TODO: deprecated name
+		$this->deprecatedMethodWarning(__METHOD__);
+		return $this->getTimetable($member);
 	}
 
 	public function schedulesWeek($start_dto, $days_context=NULL) {
@@ -351,7 +376,7 @@ class ServiceTimes {
 		}
 
 		// look for regular day matches
-		return $this->hoursOn($day_name, $schedule['regular']);
+		return $this->scheduleOn($day_name, $schedule['regular']);
 	}
 
 }
