@@ -131,15 +131,15 @@ class ServiceTimes {
 		'thursday'  => 4,
 		'friday'    => 5,
 		'saturday'  => 6,
-		];
+		]; // from PHP 7, we should be able to do this like const DOW = array_flip(['sunday','monday',....]);
 
-	function __construct($service) {
-		$this->load($service);
+	function __construct($calendar) {
+		$this->load($calendar);
 		return $this;
 	}
 
-	private function load($service) {
-		$this->calendar = $service;
+	private function load($calendar) {
+		$this->calendar = $calendar;
 		$this->timezone = new \DateTimeZone($this->calendar['timezone']);
 		// TODO - validate the times ??
 	}

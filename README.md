@@ -74,7 +74,7 @@ _RENAMED from 'Opnhrs'_
 
 ##### Methods
 
-* _ServiceTimes_ **__construct**(_Calendar_ service): instantiate and load a single _calendar_'s data
+* _ServiceTimes_ **__construct**(_Calendar_ calendar): instantiate and load a single _calendar_'s data
 * _boolean_ **opensOn**(_string_ day_name, _RegularTimetable_ calendar(=NULL)): return whether service times are in _schedule_, which defaults to the current calendar's regular _timetable_. _TO BE RENAMED 'availableOn'_
 * _boolean_ **openAt**(_DateTime_ dto): Returns whether the service is available at _dto_ in the current _calendar_. _TO BE RENAMED 'availableAt'_
 * _Schedule_ **hoursOn**(_string_ day_name, _RegularTimetable_ calendar(=NULL)): Returns the _schedule_ for _day_name_ in _schedule_. _TO BE RENAMED 'scheduleOn'_
