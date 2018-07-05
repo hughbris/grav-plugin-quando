@@ -122,7 +122,7 @@ class TranslateExtension extends \Twig_Extension {
 }
 
 class ServiceTimes {
-	private $schedule;
+	private $calendar;
 	const DOW = [
 		'sunday'    => 0,
 		'monday'    => 1,
@@ -139,27 +139,27 @@ class ServiceTimes {
 	}
 
 	private function load($service) {
-		$this->schedule = $service;
-		$this->timezone = new \DateTimeZone($this->schedule['timezone']);
+		$this->calendar = $service;
+		$this->timezone = new \DateTimeZone($this->calendar['timezone']);
 		// TODO - validate the times ??
 	}
 
-	public function opensOn($day_name, $schedule=NULL) {
-		if (is_null($schedule)) {
-			$schedule = $this->schedule['regular'];
+	public function opensOn($day_name, $calendar=NULL) {
+		if (is_null($calendar)) {
+			$calendar = $this->calendar['regular'];
 		}
-		return ( array_key_exists($day_name, $schedule) AND !empty($schedule[$day_name]) );
+		return ( array_key_exists($day_name, $calendar) AND !empty($calendar[$day_name]) );
 	}
 
-	public function hoursOn($day_name, $schedule=NULL) {
-		if (is_null($schedule)) {
-			$schedule = $this->schedule['regular'];
+	public function hoursOn($day_name, $calendar=NULL) {
+		if (is_null($calendar)) {
+			$calendar = $this->calendar['regular'];
 		}
 
 		$ret = [];
 
-		if ($this->opensOn($day_name, $schedule)) {
-			$ret = $schedule[$day_name];
+		if ($this->opensOn($day_name, $calendar)) {
+			$ret = $calendar[$day_name];
 		}
 
 		return $ret;
@@ -276,14 +276,14 @@ class ServiceTimes {
 
 			// look for period matches
 			// NB - we are taking first match from periods array, so that's the precedence
-			foreach($this->schedule['periods'] as $period) {
+			foreach($this->calendar['periods'] as $period) {
 				if ( $period['start'] <= $date_ymd AND $period['finish'] >= $date_ymd ) {
 					return $this->findInSchedule($day_name, $date_ymd, $period);
 				}
 			}
 
 			// look for global matches
-			return $this->findInSchedule($day_name, $date_ymd, $this->schedule);
+			return $this->findInSchedule($day_name, $date_ymd, $this->calendar);
 		}
 
 		return [];
@@ -307,18 +307,18 @@ class ServiceTimes {
 	}
 
 	public function regularSchedule() {
-		return $this->schedule['regular'];
+		return $this->calendar['regular'];
 	}
 
 	public function getSchedule($member=NULL) {
 		if (is_null($member)) {
-			return $this->schedule;
+			return $this->calendar;
 		}
-		elseif (!array_key_exists($member, $this->schedule)) {
+		elseif (!array_key_exists($member, $this->calendar)) {
 			return [];
 		}
 		else {
-			return($this->schedule[$member]);
+			return($this->calendar[$member]);
 		}
 	}
 

@@ -70,14 +70,14 @@ _RENAMED from 'Opnhrs'_
 
 ##### Properties
 
-* _Calendar_ **schedule**: holds the loaded _calendar_ data for the class instance. _TO BE RENAMED to 'calendar'_
+* _Calendar_ **calendar**: holds the loaded _calendar_ data for the class instance. _RENAMED from 'schedule'_
 
 ##### Methods
 
 * _ServiceTimes_ **__construct**(_Calendar_ service): instantiate and load a single _calendar_'s data
-* _boolean_ **opensOn**(_string_ day_name, _RegularTimetable_ schedule(=NULL)): return whether service times are in _schedule_, which defaults to the current calendar's regular _timetable_. _TO BE RENAMED 'availableOn'_
+* _boolean_ **opensOn**(_string_ day_name, _RegularTimetable_ calendar(=NULL)): return whether service times are in _schedule_, which defaults to the current calendar's regular _timetable_. _TO BE RENAMED 'availableOn'_
 * _boolean_ **openAt**(_DateTime_ dto): Returns whether the service is available at _dto_ in the current _calendar_. _TO BE RENAMED 'availableAt'_
-* _Schedule_ **hoursOn**(_string_ day_name, _RegularTimetable_ schedule(=NULL)): Returns the _schedule_ for _day_name_ in _schedule_. _TO BE RENAMED 'scheduleOn'_
+* _Schedule_ **hoursOn**(_string_ day_name, _RegularTimetable_ calendar(=NULL)): Returns the _schedule_ for _day_name_ in _schedule_. _TO BE RENAMED 'scheduleOn'_
 * _string_ **briefTime**(_string_ timeOfDay, _string_ pattern(='g.ia'), _array_ truncateZeroComponents(=['.i'])): Convert 24 hour time string to _pattern_, leaving off the components listed in _truncateZeroComponents_ if they are zero. (static) (exposed as Twig filter)
 * _array_ **formatSchedule**(_Schedule_ schedule,  _string_ pattern, _array_ truncateZeroComponents(=[])): Format all the timestamps in _schedule_ to `briefTime`. (static)
 * _array_ **statusAt**(_DateTime_ dto, _boolean_ includeNext(=TRUE)): Return indexed information about service status at _dto_, and optionally after the next status change.
