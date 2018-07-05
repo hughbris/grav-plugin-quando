@@ -156,11 +156,6 @@ class ServiceTimes {
 		return ( array_key_exists($day_name, $calendar) AND !empty($calendar[$day_name]) );
 	}
 
-	public function opensOn($day_name, $calendar=NULL) { // TODO: deprecated name
-		$this->deprecatedMethodWarning(__METHOD__);
-		return $this->availableOn($day_name, $calendar);
-	}
-
 	public function scheduleOn($day_name, $calendar=NULL) {
 		if (is_null($calendar)) {
 			$calendar = $this->calendar['regular'];
@@ -173,11 +168,6 @@ class ServiceTimes {
 		}
 
 		return $ret;
-	}
-
-	public function hoursOn($day_name, $calendar=NULL) { // TODO: deprecated name
-		$this->deprecatedMethodWarning(__METHOD__);
-		return $this->scheduleOn($day_name, $calendar);
 	}
 
 	private function opensLaterOnDay($dto, $hours) { // "beforeCOB" ??
@@ -232,19 +222,9 @@ class ServiceTimes {
 		return $this->statusAt($dto, FALSE)['open'];
 	}
 
-	public function openAt($dto) {  // TODO: deprecated name
-		$this->deprecatedMethodWarning(__METHOD__);
-		return $this->availableAt($dto);
-	}
-
 	public function isAvailable() {
 		$dto = new \DateTime();
 		return $this->availableAt($dto);
-	}
-
-	public function isOpen() {  // TODO: deprecated name
-		$this->deprecatedMethodWarning(__METHOD__);
-		return $this->isAvailable();
 	}
 
 	private function nextChange($dto, $hours=NULL) {
@@ -335,11 +315,6 @@ class ServiceTimes {
 		return $this->calendar['regular'];
 	}
 
-	public function regularSchedule() { // TODO: deprecated name
-		$this->deprecatedMethodWarning(__METHOD__);
-		return $this->regularTimetable();
-	}
-
 	public function getTimetable($timetable=NULL) {
 		if (is_null($timetable)) {
 			return $this->calendar;
@@ -350,11 +325,6 @@ class ServiceTimes {
 		else {
 			return($this->calendar[$timetable]);
 		}
-	}
-
-	public function getSchedule($member=NULL) { // TODO: deprecated name
-		$this->deprecatedMethodWarning(__METHOD__);
-		return $this->getTimetable($member);
 	}
 
 	public function schedulesWeek($start_dto, $days_context=NULL) {
@@ -377,6 +347,39 @@ class ServiceTimes {
 
 		// look for regular day matches
 		return $this->scheduleOn($day_name, $schedule['regular']);
+	}
+
+	/* ******************************************************************* */
+	/* Deprecated methods below retained for API compatibility: DO NOT USE */
+
+	public function opensOn($day_name, $calendar=NULL) { // TODO: remove deprecated name
+		$this->deprecatedMethodWarning(__METHOD__);
+		return $this->availableOn($day_name, $calendar);
+	}
+
+	public function hoursOn($day_name, $calendar=NULL) { // TODO: remove deprecated name
+		$this->deprecatedMethodWarning(__METHOD__);
+		return $this->scheduleOn($day_name, $calendar);
+	}
+
+	public function openAt($dto) {  // TODO: remove deprecated name
+		$this->deprecatedMethodWarning(__METHOD__);
+		return $this->availableAt($dto);
+	}
+
+	public function isOpen() {  // TODO: remove deprecated name
+		$this->deprecatedMethodWarning(__METHOD__);
+		return $this->isAvailable();
+	}
+
+	public function getSchedule($member=NULL) { // TODO: remove deprecated name
+		$this->deprecatedMethodWarning(__METHOD__);
+		return $this->getTimetable($member);
+	}
+
+	public function regularSchedule() { // TODO: remove deprecated name
+		$this->deprecatedMethodWarning(__METHOD__);
+		return $this->regularTimetable();
 	}
 
 }
