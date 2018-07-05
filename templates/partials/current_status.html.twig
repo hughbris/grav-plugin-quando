@@ -1,5 +1,6 @@
-{# this partial template expects open_hours to be passed in as type \Grav\Plugin\Opnhrs #}
-{{ dump(open_hours) -}}
+{# this partial template expects service_times to be passed in as type \Grav\Plugin\ServiceTimes #}
+{% set service_times = service_times|default(open_hours) %} {# support deprecated parameter name #}
+{{ dump(service_times) -}}
 
 {% macro niceOpenings(schedule, range_symbol, delimiter) -%}
 	{% spaceless %}
@@ -14,20 +15,20 @@
 {%- import _self as transforms -%}
 
 {% spaceless %}
-{% set hours_formatted = openhrs.opening.formatSchedule(open_hours.hours, 'g.ia', ['.i']) %}
-{% if open_hours.open %} {# open today o-s[, o-s] #}
+{% set hours_formatted = openhrs.opening.formatSchedule(service_times.hours, 'g.ia', ['.i']) %}
+{% if service_times.open %} {# open today o-s[, o-s] #}
 	{{ 'PLUGIN_QUANDO.OPEN_TODAY'|t }} {{ transforms.niceOpenings(hours_formatted) }}
 {% else %}
-	{% if open_hours.open_later_on_day -%} {# open today o-s[,o-s] #}
+	{% if service_times.open_later_on_day -%} {# open today o-s[,o-s] #}
 		{{ 'PLUGIN_QUANDO.HOURS_TODAY'|t }} {{ transforms.niceOpenings(hours_formatted) }}
 	{% else %}
-		{% if open_hours.until|date('Ymd') == 'now'|date_modify('+1 day')|date('Ymd') %} {# 'tomorrow' #}
-			{{ 'PLUGIN_QUANDO.OPENS_TOMORROW'|t }} {{ open_hours.until|date('g.ia')|replace({'.00':''}) }}
+		{% if service_times.until|date('Ymd') == 'now'|date_modify('+1 day')|date('Ymd') %} {# 'tomorrow' #}
+			{{ 'PLUGIN_QUANDO.OPENS_TOMORROW'|t }} {{ service_times.until|date('g.ia')|replace({'.00':''}) }}
 		{% else %} {# next open [date, time] #}
-			{{ 'PLUGIN_QUANDO.OPENS_NEXT'|t }} {{ open_hours.until|date('D jS, g.ia')|replace({'.00':''}) }} {# FIXME: this pattern isn't internationalised - try using the undocumented filter open_hours.until|nicetime(true) #}
+			{{ 'PLUGIN_QUANDO.OPENS_NEXT'|t }} {{ service_times.until|date('D jS, g.ia')|replace({'.00':''}) }} {# FIXME: this pattern isn't internationalised - try using the undocumented filter service_times.until|nicetime(true) #}
 		{% endif %}
 	{% endif %}
 {% endif %}
 
-{{ dump(transforms.niceOpenings(open_hours.debug)) }}
+{{ dump(transforms.niceOpenings(service_times.debug)) }}
 {% endspaceless %}

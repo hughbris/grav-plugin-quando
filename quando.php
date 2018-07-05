@@ -61,12 +61,13 @@ class QuandoPlugin extends Plugin
 		// NB: $services_times vs. $service_times !!
 		$services_times = $this->config['plugins']['quando']['hours'];
 
-		$openhrs = [];
+		$calendars = [];
 		foreach($services_times as $name => $service_times) {
-			$openhrs[$name] = new Opnhrs($service_times);
+			$calendars[$name] = new ServiceTimes($service_times);
 		}
 
-		$this->grav['twig']->twig_vars['openhrs'] = $openhrs;
+		$this->grav['twig']->twig_vars['openhrs'] = $calendars; // TODO: deprecated name
+		$this->grav['twig']->twig_vars['quando'] = $calendars;
 	}
 
 }
@@ -79,7 +80,7 @@ class DatetimeFormatExtension extends \Twig_Extension {
 
     public function getFilters() {
         return [
-            new \Twig_SimpleFilter('briefTime', 'Grav\Plugin\Opnhrs::briefTime'),
+            new \Twig_SimpleFilter('briefTime', 'Grav\Plugin\ServiceTimes::briefTime'),
         ];
     }
 
@@ -120,7 +121,7 @@ class TranslateExtension extends \Twig_Extension {
 
 }
 
-class Opnhrs {
+class ServiceTimes {
 	private $schedule;
 	const DOW = [
 		'sunday'    => 0,

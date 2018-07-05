@@ -62,11 +62,11 @@ Copy, customise, and include one of the sample templates, probably start with a 
 
 This is subject to imminent change because of [new nomenclature](https://github.com/hughbris/grav-plugin-quando/issues/6#issuecomment-397140502) and data restructuring. It's only available in PHP and Twig at present, though there are plans to [expose the API through shortcodes](https://github.com/hughbris/grav-plugin-quando/issues/7).
 
-#### Opnhrs object
+#### ServiceTimes object
 
-Exposed to Twig as 'openhrs', an indexed array with members named for each property, e.g. 'openhrs.opening'.
+Exposed to Twig as 'quando' (formerly 'openhrs'), an indexed array with members named for each property, e.g. 'quando.opening'.
 
-_TO BE RENAMED to 'Quando' or 'ServiceTimes'_
+_RENAMED from 'Opnhrs'_
 
 ##### Properties
 
@@ -74,7 +74,7 @@ _TO BE RENAMED to 'Quando' or 'ServiceTimes'_
 
 ##### Methods
 
-* _Opnhrs_ **__construct**(_Calendar_ service): instantiate and load a single _calendar_'s data
+* _ServiceTimes_ **__construct**(_Calendar_ service): instantiate and load a single _calendar_'s data
 * _boolean_ **opensOn**(_string_ day_name, _RegularTimetable_ schedule(=NULL)): return whether service times are in _schedule_, which defaults to the current calendar's regular _timetable_. _TO BE RENAMED 'availableOn'_
 * _boolean_ **openAt**(_DateTime_ dto): Returns whether the service is available at _dto_ in the current _calendar_. _TO BE RENAMED 'availableAt'_
 * _Schedule_ **hoursOn**(_string_ day_name, _RegularTimetable_ schedule(=NULL)): Returns the _schedule_ for _day_name_ in _schedule_. _TO BE RENAMED 'scheduleOn'_
