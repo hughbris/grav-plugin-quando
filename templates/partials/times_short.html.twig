@@ -1,6 +1,8 @@
 {% spaceless %}
-{% for block in hours %}
-	{{ block.opens|briefTime }} – {{ block.shuts|briefTime }}{% if not loop.last %}, {% endif %}
+{% for window in hours %}
+	{% set starts = window.starts|default(window.begins|default(window.opens)) %} {# TODO: remove deprecated property 'opens' #}
+	{% set stops = window.stops|default(window.finishes|default(window.shuts)) %} {# TODO: remove deprecated property 'shuts' #}
+	{{ starts|briefTime }} – {{ stops|briefTime }}{% if not loop.last %}, {% endif %}
 {% else %}
 	Closed
 {% endfor %}

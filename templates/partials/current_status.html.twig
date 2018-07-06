@@ -5,8 +5,10 @@
 {% macro niceOpenings(schedule, range_symbol, delimiter) -%}
 	{% spaceless %}
 		{% set output = [] %}
-		{% for opening in schedule %}
-			{% set output = output|merge([opening.opens ~ range_symbol|default('-') ~ opening.shuts]) %}
+		{% for window in schedule %}
+			{% set starts = window.starts|default(window.begins|default(window.opens)) %} {# TODO: remove deprecated property 'opens' #}
+			{% set stops = window.stops|default(window.finishes|default(window.shuts)) %} {# TODO: remove deprecated property 'shuts' #}
+			{% set output = output|merge([starts ~ range_symbol|default('-') ~ stops]) %}
 		{% endfor %}
 		{{ output|join(delimiter|default(', '))|trim }}
 	{% endspaceless %}
@@ -15,7 +17,7 @@
 {%- import _self as transforms -%}
 
 {% spaceless %}
-{% set hours_formatted = openhrs.opening.formatSchedule(service_times.hours, 'g.ia', ['.i']) %}
+{% set hours_formatted = quando.opening.formatSchedule(service_times.hours, 'g.ia', ['.i']) %}
 {% if service_times.open %} {# open today o-s[, o-s] #}
 	{{ 'PLUGIN_QUANDO.OPEN_TODAY'|t }} {{ transforms.niceOpenings(hours_formatted) }}
 {% else %}

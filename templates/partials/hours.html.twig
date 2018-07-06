@@ -1,4 +1,4 @@
-{% set schedules = openhrs.opening.regularSchedule() %}
+{% set schedules = quando.opening.regularTimetable() %}
 
 {# TODO: possibly this macro should just be a partial template like the short_time one but with lots of extra params #}
 {% macro microdataOpenings(schedule, range_symbol, delimiter, render_pattern, render_exclusions) -%}
@@ -7,11 +7,13 @@
 	{% set md_date_format = 'H:i:s' %}
 	{% spaceless %}
 		{% set output = [] %}
-		{% for opening in schedule %}
+		{% for window in schedule %}
+			{% set starts = window.starts|default(window.begins|default(window.opens)) %} {# TODO: remove deprecated property 'opens' #}
+			{% set stops = window.stops|default(window.finishes|default(window.shuts)) %} {# TODO: remove deprecated property 'shuts' #}
 			{% set markup %}
-				<span property="opens" content="{{ opening.opens|briefTime(md_date_format) }}" datatype="xsd:time">{{ opening.opens|briefTime(render_pattern, render_exclusions) }}</span>
+				<span property="opens" content="{{ starts|briefTime(md_date_format) }}" datatype="xsd:time">{{ starts|briefTime(render_pattern, render_exclusions) }}</span>
 				{{ range_symbol|default('–') }}
-				<span property="closes" content="{{ opening.shuts|briefTime(md_date_format) }}" datatype="xsd:time">{{ opening.shuts|briefTime(render_pattern, render_exclusions) }}</span>
+				<span property="closes" content="{{ stops|briefTime(md_date_format) }}" datatype="xsd:time">{{ stops|briefTime(render_pattern, render_exclusions) }}</span>
 			{% endset %}
 			{% set output = output|merge([markup]) %}
 		{% endfor %}
@@ -19,7 +21,7 @@
 	{% endspaceless %}
 {%- endmacro microdataOpenings %}
 
-<h3>{{ openhrs.opening.getSchedule('headings').regular }}</h3>
+<h3>{{ quando.opening.getSchedule('headings').regular }}</h3>
 
 <table class="hours">
 	<thead>

@@ -65,7 +65,7 @@ class QuandoPlugin extends Plugin
 		foreach($services_times as $name => $service_times) {
 			$calendars[$name] = new ServiceTimes($service_times);
 		}
-		$this->grav['twig']->twig_vars['openhrs'] = $calendars; // TODO: deprecated name
+		$this->grav['twig']->twig_vars['openhrs'] = $calendars; // TODO: remove deprecated name
 		$this->grav['twig']->twig_vars['quando'] = $calendars;
 	}
 
@@ -149,35 +149,36 @@ class ServiceTimes {
 		$this->grav['debugger']->addMessage("Call to deprecated $method_name rendering template \"{$this->grav['page']->template()}\"");
 	}
 
-	public function availableOn($day_name, $calendar=NULL) {
-		if (is_null($calendar)) {
-			$calendar = $this->calendar['regular'];
+	public function availableOn($day_name, $timetable=NULL) {
+		if (is_null($timetable)) {
+			$timetable = $this->calendar['regular'];
 		}
-		return ( array_key_exists($day_name, $calendar) AND !empty($calendar[$day_name]) );
+		return ( array_key_exists($day_name, $timetable) AND !empty($timetable[$day_name]) );
 	}
 
-	public function scheduleOn($day_name, $calendar=NULL) {
-		if (is_null($calendar)) {
-			$calendar = $this->calendar['regular'];
+	public function scheduleOn($day_name, $timetable=NULL) {
+		if (is_null($timetable)) {
+			$timetable = $this->calendar['regular'];
 		}
 
 		$ret = [];
 
-		if ($this->opensOn($day_name, $calendar)) {
-			$ret = $calendar[$day_name];
+		if ($this->opensOn($day_name, $timetable)) {
+			$ret = $timetable[$day_name];
 		}
 
 		return $ret;
 	}
 
-	private function opensLaterOnDay($dto, $hours) { // "beforeCOB" ??
-		if (empty($hours)) {
+	private function availableLaterOnDay($dto, $schedule) { // "beforeCOB" ??
+		if (empty($schedule)) {
 			return FALSE;
 		}
 		else {
 			$timeOfDay = $dto->format('H:i');
-			$last_opening = array_pop($hours);
-			return ( $last_opening['shuts'] > $timeOfDay );
+			$last_window = array_pop($schedule);
+			$window_stops = array_key_exists('stops', $last_window) ? $last_window['stops'] : (array_key_exists('finishes', $last_window) ? $last_window['finishes'] : $last_window['shuts']); // TODO: remove deprecated property 'shuts' eventually
+			return ( $window_stops > $timeOfDay );
 		}
 	}
 
@@ -194,25 +195,27 @@ class ServiceTimes {
 
 	public static function formatSchedule($schedule, $pattern, $truncateZeroComponents=[]) {
 		$ret = [];
-		foreach ($schedule as $opening) {
-			foreach ($opening as $activity => $timeOfDay) {
-				$opening[$activity] = self::briefTime($timeOfDay, $pattern, $truncateZeroComponents);
+		foreach ($schedule as $window) {
+			foreach ($window as $activity => $timeOfDay) {
+				$window[$activity] = self::briefTime($timeOfDay, $pattern, $truncateZeroComponents);
 			}
-			$ret[] = $opening;
+			$ret[] = $window;
 		}
 		return $ret;
 	}
 
 	public function statusAt($dto, $includeNext=TRUE) {
+		$this->grav['debugger']->addMessage("Confirm template {$this->grav['page']->template()} or its inclusions do not use deprecated properties 'hours', 'open', 'open_on_day', or 'open_later_on_day'"); // TODO: remove deprecation warning
+
 		$ret = [];
 		$dto->setTimezone($this->timezone);
 
-		$ret['hours'] = $this->scheduleAt($dto);
-		$ret['open'] = $this->withinHours($dto, $ret['hours']);
-		$ret['open_on_day'] = !empty($ret['hours']); // this isn't worth a function - "tradingDay" ??
-		$ret['open_later_on_day'] = $this->opensLaterOnDay($dto, $ret['hours']);
+		$ret['hours'] = $ret['schedule'] = $this->scheduleAt($dto); // TODO: remove deprecated property
+		$ret['open'] = $ret['available'] = $this->withinSchedule($dto, $ret['schedule']); // TODO: remove deprecated property
+		$ret['open_on_day'] = $ret['available_on_day'] = !empty($ret['schedule']); // this isn't worth a function - "tradingDay" ??  // TODO: remove deprecated property
+		$ret['open_later_on_day'] = $ret['available_later_on_day'] = $this->availableLaterOnDay($dto, $ret['schedule']); // TODO: remove deprecated property
 		if ($includeNext) {
-			$ret['until'] = $this->nextChange($dto, $ret['hours']);
+			$ret['until'] = $this->nextChange($dto, $ret['schedule']);
 		}
 
 		return $ret;
@@ -227,37 +230,42 @@ class ServiceTimes {
 		return $this->availableAt($dto);
 	}
 
-	private function nextChange($dto, $hours=NULL) {
-		if (is_null($hours)) {
-			$this->scheduleAt($dto);
+	private function nextChange($dto, $schedule=NULL) {
+		if (is_null($schedule)) {
+			$schedule = $this->scheduleAt($dto);
 		}
 		$timeOfDay = $dto->format('H:i');
 
-		foreach($hours as $opening) {
+		foreach($schedule as $window) {
+			$starts = array_key_exists('starts', $window) ? $window['starts'] : (array_key_exists('begins', $window) ? $window['begins'] : $window['opens']); // TODO: remove deprecated property 'opens' eventually
+			$stops = array_key_exists('stops', $window) ? $window['stops'] : (array_key_exists('finishes', $window) ? $window['finishes'] : $window['shuts']); // TODO: remove deprecated property 'shuts' eventually
 
 			// test for easy case where $timeOfDay is before this opening
-			if ( $timeOfDay < $opening['opens'] ) {
-				return \DateTime::createFromFormat('Y-m-d H:i', $dto->format('Y-m-d ') . $opening['opens']);
+			if ( $timeOfDay < $starts ) {
+				return \DateTime::createFromFormat('Y-m-d H:i', $dto->format('Y-m-d ') . $starts);
 			}
 
-			if ( $opening['opens'] <= $timeOfDay AND $opening['shuts'] > $timeOfDay ) {
-				return \DateTime::createFromFormat('Y-m-d H:i', $dto->format('Y-m-d ') . $opening['shuts']);
+			if ( $starts <= $timeOfDay AND $stops > $timeOfDay ) {
+				return \DateTime::createFromFormat('Y-m-d H:i', $dto->format('Y-m-d ') . $stops);
 				// TODO: handle times going over midnight here, not needed now
 			}
 		}
 
 		// still here? let's try the next day until we get something (recursive calls)
 		$nextDay = $dto->add(new \DateInterval('P1D'));
-		$nextDayHours = $this->scheduleAt($nextDay);
+		$nextDaySchedule = $this->scheduleAt($nextDay);
 		$nextDay = \DateTime::createFromFormat('Y-m-d H:i', $nextDay->format('Y-m-d') . ' 00:00'); // bring it back to midnight
-		return $this->nextChange($nextDay, $nextDayHours);
+		return $this->nextChange($nextDay, $nextDaySchedule);
 
 	}
 
-	private function withinHours($dto, $hours) {
+	private function withinSchedule($dto, $schedule) {
 		$timeOfDay = $dto->format('H:i');
-		foreach($hours as $opening) {
-			if ( $opening['opens'] <= $timeOfDay AND $opening['shuts'] > $timeOfDay ) {
+		foreach($schedule as $window) {
+			$starts = array_key_exists('starts', $window) ? $window['starts'] : (array_key_exists('begins', $window) ? $window['begins'] : $window['opens']); // TODO: remove deprecated property 'opens' eventually
+			$stops = array_key_exists('stops', $window) ? $window['stops'] : (array_key_exists('finishes', $window) ? $window['finishes'] : $window['shuts']); // TODO: remove deprecated property 'shuts' eventually
+
+			if ( $starts <= $timeOfDay AND $stops > $timeOfDay ) {
 				return TRUE;
 			}
 		}
@@ -282,7 +290,9 @@ class ServiceTimes {
 			// look for period matches
 			// NB - we are taking first match from periods array, so that's the precedence
 			foreach($this->calendar['periods'] as $period) {
-				if ( $period['start'] <= $date_ymd AND $period['finish'] >= $date_ymd ) {
+				$begins = array_key_exists('begin', $period) ? $period['begin'] : $period['start']; // TODO: remove deprecated property 'start' eventually
+				$ends = array_key_exists('end', $period) ? $period['end'] : $period['finish']; // TODO: remove deprecated property 'finish' eventually
+				if ( $begins <= $date_ymd AND $ends >= $date_ymd ) {
 					return $this->findInSchedule($day_name, $date_ymd, $period);
 				}
 			}

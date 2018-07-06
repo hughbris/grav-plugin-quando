@@ -75,9 +75,9 @@ _RENAMED from 'Opnhrs'_
 ##### Methods
 
 * _ServiceTimes_ **__construct**(_Calendar_ calendar): instantiate and load a single _calendar_'s data
-* _boolean_ **availableOn**(_string_ day_name, _RegularTimetable_ calendar(=NULL)): return whether service times are in _schedule_, which defaults to the current calendar's regular _timetable_. _RENAMED from 'opensOn'_
+* _boolean_ **availableOn**(_string_ day_name, _RegularTimetable_ timetable(=NULL)): return whether service times are in _timetable_, which defaults to the current calendar's regular _timetable_. _RENAMED from 'opensOn'_
 * _boolean_ **availableAt**(_DateTime_ dto): Returns whether the service is available at _dto_ in the current _calendar_. _RENAMED from 'openAt'_
-* _Schedule_ **scheduleOn**(_string_ day_name, _RegularTimetable_ calendar(=NULL)): Returns the _schedule_ for _day_name_ in _schedule_. _RENAMED from 'hoursOn'_
+* _Schedule_ **scheduleOn**(_string_ day_name, _RegularTimetable_ timetable(=NULL)): Returns the _schedule_ for _day_name_ in _timetable_. _RENAMED from 'hoursOn'_
 * _string_ **briefTime**(_string_ timeOfDay, _string_ pattern(='g.ia'), _array_ truncateZeroComponents(=['.i'])): Convert 24 hour time string to _pattern_, leaving off the components listed in _truncateZeroComponents_ if they are zero. (static) (exposed as Twig filter)
 * _array_ **formatSchedule**(_Schedule_ schedule,  _string_ pattern, _array_ truncateZeroComponents(=[])): Format all the timestamps in _schedule_ to `briefTime`. (static)
 * _array_ **statusAt**(_DateTime_ dto, _boolean_ includeNext(=TRUE)): Return indexed information about service status at _dto_, and optionally after the next status change.
@@ -86,7 +86,7 @@ _RENAMED from 'Opnhrs'_
 * _array_ **schedulesAfter**(_DateTime_ start_dto, _integer_ days_duration): Return a date-indexed array of schedules from _days_duration_ days after _dto_.
 * _array_ **schedulesWeek**(_DateTime_ start_dto, _integer_ days_context(=NULL)): Return a date-indexed array of 7 schedules from _days_context_ days before _start_dto_.
 * _Timetable_ **regularTimetable**(): Return the `regular` _timetable_ for the current _calendar_. _RENAMED from 'regularSchedule'_
-* _Timetable_ **getTimetable**(_string_ member(=NULL)): Return every _timetable_ in the curent _calendar_, or just the one named "_member_". _RENAMED from 'getSchedule'_
+* _Timetable_ **getTimetable**(_string_ member(=NULL)): Return every _timetable_ in the current _calendar_, or just the one named "_member_". _RENAMED from 'getSchedule'_
 
 ## Examples in the wild
 

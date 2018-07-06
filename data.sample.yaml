@@ -5,18 +5,18 @@ hours:
     completed_until: "2018-11-16" # TODO: use this to set alerts for maintainers
     regular:
       monday:
-        - opens: "09:00"
-          shuts: "12:30"
-        - opens: "13:00"
-          shuts: "17:00"
+        - starts: "09:00"
+          stops: "12:30"
+        - starts: "13:00"
+          stops: "17:00"
       tuesday:
-        - opens: "08:00"
-          shuts: "12:30"
-        - opens: "13:00"
-          shuts: "18:00"
+        - starts: "08:00"
+          stops: "12:30"
+        - starts: "13:00"
+          stops: "18:00"
       thursday:
-        - opens: "10:00"
-          shuts: "14:15"
+        - starts: "10:00"
+          stops: "14:15"
     exceptions:
       '2018-05-12':
         hours: []
@@ -32,10 +32,10 @@ hours:
         comment: 'Deliverance Anniversary'
       '2018-08-24':
         hours: # example multi-period below
-          - opens: "09:00"
-            shuts: "12:00"
-          - opens: "13:00"
-            shuts: "16:00"
+          - starts: "09:00"
+            stops: "12:00"
+          - starts: "13:00"
+            stops: "16:00"
         comment: 'Staff hoedown'
       '2018-10-15':
         hours: []
@@ -44,27 +44,27 @@ hours:
         hours: []
         comment: 'Example day'
     periods:
-      - start: "2018-12-22"
-        finish: "2018-01-12"
+      - begin: "2018-12-22"
+        end: "2018-01-12"
         description: Closed
         name: "Summer break"
         regular: []
-      - start: "2018-12-17"
-        finish: "2018-12-21"
+      - begin: "2018-12-17"
+        end: "2018-12-21"
         description: 'Reduced hours'
         name: "Christmas wind down"
         regular:
           wednesday:
-            - opens: "10:00"
-              shuts: "13:00"
+            - starts: "10:00"
+              stops: "13:00"
           thursday:
-            - opens: "08:00"
-              shuts: "12:30"
-            - opens: "13:00"
-              shuts: "15:30"
+            - starts: "08:00"
+              stops: "12:30"
+            - starts: "13:00"
+              stops: "15:30"
           sunday:
-            - opens: "08:00"
-              shuts: "12:30"
+            - starts: "08:00"
+              stops: "12:30"
         exceptions:
           '2018-12-25':
             hours: []
