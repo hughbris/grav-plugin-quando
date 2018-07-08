@@ -1,7 +1,8 @@
-{% set schedule = openhrs.opening.getSchedule() %}
-
-{% set periods = schedule.periods %}
-{% set exceptions = schedule.exceptions %}
+{% set calendar_name = calendar_name|default('opening') %}
+{% set calendar = quando[calendar_name] %}
+{% set metadata = calendar.getTimetable() %} {# for my tastes, this is a little clunky to get _some_ properties that happen to be metadata #}
+{% set periods = calendar.getTimetable('periods') %}
+{% set exceptions = calendar.getTimetable('exceptions') %}
 
 {# TODO: provide an option to hide exceptions from last year (or periods) and support it below #}
 
@@ -10,15 +11,15 @@
 {# TODO: suppress all this if there are none coming up #}
 {# if periods|merge(exceptions) is not empty #}
 
-<h4>{{ schedule.headings.irregular }}</h4>
+<h4>{{ metadata.headings.irregular }}</h4>
 
 <div class="exceptions">
 
 	{% for period in periods %}
-		{% set starts = date(period.start) %}
-		{% set finishes = date(period.finish) %}
+		{% set begins = date(period.begin ?: period.start) %} {# TODO: deprecated property name period.start #}
+		{% set ends = date(period.end ?: period.finish) %} {# TODO: deprecated property name period.finish #}
 		<div class="period">
-			<p>{{ starts|date('l') }} <strong>{{ starts|date('F j') }}</strong>{% if 'now'|date('Y') != starts|date('Y') %}, {{ starts|date('Y') }}{% endif %} to {{ finishes|date('l') }} <strong>{{ finishes|date('F j') }}</strong>{% if 'now'|date('Y') != finishes|date('Y') %}, {{ finishes|date('Y') }} {% endif %}:</p>
+			<p>{{ begins|date('l') }} <strong>{{ begins|date('F j') }}</strong>{% if 'now'|date('Y') != begins|date('Y') %}, {{ begins|date('Y') }}{% endif %} to {{ ends|date('l') }} <strong>{{ ends|date('F j') }}</strong>{% if 'now'|date('Y') != ends|date('Y') %}, {{ ends|date('Y') }} {% endif %}:</p>
 			<p style="margin-left: 2em">{{ period.description }}<em> ({{ period.name }})</em></p>
 
 			{# TODO: show any hours here, hey !!! #}
@@ -28,7 +29,7 @@
 
 	{% for d, exception in exceptions|ksort %}
 		{% set day = date(d) %}
-		<p>{{ day|date('l') }} <strong>{{ day|date('F j') }}</strong>{% if 'now'|date('Y') != day|date('Y') %}, {{ day|date('Y') }}{% endif %}: {% include 'partials/times_short.html.twig' with { hours: exception.hours } %}{% if exception.comment is defined %} <em>({{ exception.comment }})</em>{% endif %}</p>
+		<p>{{ day|date('l') }} <strong>{{ day|date('F j') }}</strong>{% if 'now'|date('Y') != day|date('Y') %}, {{ day|date('Y') }}{% endif %}: {% include 'partials/times_short.html.twig' with { 'schedule': exception.hours,  'calendar_name': calendar_name } %}{% if exception.comment is defined %} <em>({{ exception.comment }})</em>{% endif %}</p>
 	{% endfor %}
 
 </div>

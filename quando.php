@@ -158,12 +158,12 @@ class ServiceTimes {
 
 	public function scheduleOn($day_name, $timetable=NULL) {
 		if (is_null($timetable)) {
-			$timetable = $this->calendar['regular'];
+			$timetable = $this->regularTimetable();
 		}
 
 		$ret = [];
 
-		if ($this->opensOn($day_name, $timetable)) {
+		if ($this->availableOn($day_name, $timetable)) {
 			$ret = $timetable[$day_name];
 		}
 
@@ -316,7 +316,7 @@ class ServiceTimes {
 			if ($i > 0) {
 				$day[$i]->add(new \DateInterval('P1D')); // thanks PHP, WTF were you thinking when you created this class API ??
 			}
-			$ret[] = ['day' => $day[$i], 'schedule' => $this->scheduleAt($day[$i])];
+			$ret[] = ['day' => $day[$i], 'schedule' => $this->scheduleAt($day[$i]), 'windows' => $this->scheduleAt($day[$i])]; // TODO: remove deprecated 'schedule' property here
 		}
 		return $ret;
 	}

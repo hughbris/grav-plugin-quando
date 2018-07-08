@@ -1,8 +1,9 @@
-{# this partial template expects service_times to be passed in as type \Grav\Plugin\ServiceTimes #}
-{% set service_times = service_times|default(open_hours) %} {# support deprecated parameter name #}
-{{ dump(service_times) -}}
+{# this partial template expects calendar to be passed in as type ServiceTimes #}
+{% set calendar = calendar|default(quando.opening) %}
+{% set service_status = (service_status ?: open_hours)|default(calendar.statusAt(date(now))) %} {# TODO: deprecated parameter name and now deprecated parameter, only need calendar passed in but we'll still derive and set this here #}
+{# dump(service_status) #}
 
-{% macro niceOpenings(schedule, range_symbol, delimiter) -%}
+{% macro niceWindows(schedule, range_symbol, delimiter) -%}
 	{% spaceless %}
 		{% set output = [] %}
 		{% for window in schedule %}
@@ -12,25 +13,31 @@
 		{% endfor %}
 		{{ output|join(delimiter|default(', '))|trim }}
 	{% endspaceless %}
-{%- endmacro niceOpenings %}
+{%- endmacro niceWindows %}
+
+{% macro niceOpenings(schedule, range_symbol, delimiter) -%} {# TODO: deprecated function DO NOT USE #}
+    {% import _self as preferred %}
+    {{ preferred.niceWindows(schedule, range_symbol, delimiter) }}
+{% endmacro niceOpenings %}
 
 {%- import _self as transforms -%}
 
 {% spaceless %}
-{% set hours_formatted = quando.opening.formatSchedule(service_times.hours, 'g.ia', ['.i']) %}
-{% if service_times.open %} {# open today o-s[, o-s] #}
-	{{ 'PLUGIN_QUANDO.OPEN_TODAY'|t }} {{ transforms.niceOpenings(hours_formatted) }}
+{% set hours_formatted = calendar.formatSchedule(service_status.schedule, 'g.ia', ['.i']) %}
+{% set timetable = calendar.getTimetable() %}
+{% if service_status.available %} {# e.g. "open today o-s[, o-s]" #}
+	{{ (timetable.labels.available_today ?: 'PLUGIN_QUANDO.AVAILABLE_TODAY')|t }} {{ transforms.niceWindows(hours_formatted) }}
 {% else %}
-	{% if service_times.open_later_on_day -%} {# open today o-s[,o-s] #}
-		{{ 'PLUGIN_QUANDO.HOURS_TODAY'|t }} {{ transforms.niceOpenings(hours_formatted) }}
+	{% if service_status.available_later_on_day -%} {# e.g. "open today o-s[,o-s]" #}
+		{{ 'PLUGIN_QUANDO.HOURS_TODAY'|t }} {{ transforms.niceWindows(hours_formatted) }}
 	{% else %}
-		{% if service_times.until|date('Ymd') == 'now'|date_modify('+1 day')|date('Ymd') %} {# 'tomorrow' #}
-			{{ 'PLUGIN_QUANDO.OPENS_TOMORROW'|t }} {{ service_times.until|date('g.ia')|replace({'.00':''}) }}
-		{% else %} {# next open [date, time] #}
-			{{ 'PLUGIN_QUANDO.OPENS_NEXT'|t }} {{ service_times.until|date('D jS, g.ia')|replace({'.00':''}) }} {# FIXME: this pattern isn't internationalised - try using the undocumented filter service_times.until|nicetime(true) #}
+		{% if service_status.until|date('Ymd') == 'now'|date_modify('+1 day')|date('Ymd') %} {# 'tomorrow' #}
+			{{ (timetable.labels.available_tomorrow ?: 'PLUGIN_QUANDO.AVAILABLE_TOMORROW')|t }} {{ service_status.until|date('g.ia')|replace({'.00':''}) }}
+		{% else %} {# e.g. "next open [date, time]" #}
+			{{ (timetable.labels.available_next ?: 'PLUGIN_QUANDO.AVAILABLE_NEXT')|t }} {{ service_status.until|date('D jS, g.ia')|replace({'.00':''}) }} {# FIXME: this pattern isn't internationalised - try using the undocumented filter service_status.until|nicetime(true) #}
 		{% endif %}
 	{% endif %}
 {% endif %}
 
-{{ dump(transforms.niceOpenings(service_times.debug)) }}
+{# dump(transforms.niceWindows(service_status.debug)) #}
 {% endspaceless %}

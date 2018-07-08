@@ -1,4 +1,9 @@
-{% set schedules = openhrs.opening.schedulesWeek(date(), context) %}
+{% set calendar_name = calendar_name|default('opening') %}
+{% set days_context= days_context|default(context) %}  {# TODO: deprecated parameter name context #}
+
+{% set calendar = quando[calendar_name] %}
+{% set schedules = calendar.schedulesWeek(date(), days_context) %}
+{% set metadata = calendar.getTimetable() %} {# for my tastes, this is a little clunky to get _some_ properties that happen to be metadata #}
 {{ dump(schedules) }}
 <tbody>
 	{% import 'partials/current_status.html.twig' as transforms %}
@@ -8,11 +13,11 @@
 		{% if schedule.day == date() %}
 			{% set title = 'PLUGIN_QUANDO.TODAY'|t|capitalize %}
 			{% set classes = classes|merge( ['current'] ) %}
-			{% set classes = classes|merge( [ (openhrs.opening.isOpen ? 'open' : 'closed') ] ) %}
-			{% if 'closed' in classes %}
-				{% set status = openhrs.opening.statusAt(date(), false) %}
-				{% if status.open_on_day %}
-					{% set classes = classes|merge( ['trading-day'] ) %}
+			{% set classes = classes|merge( (calendar.isAvailable ? ['open','on','started'] : ['closed','off','stopped']) ) %}
+			{% if 'off' in classes %}
+				{% set status = calendar.statusAt(date(), false) %}
+				{% if status.available_on_day %}
+					{% set classes = classes|merge( ['trading-day', 'service-day'] ) %}
 				{% endif %}
 			{% endif %}
 		{% elseif schedule.day == 'now'|date_modify('-1 day') %}
@@ -24,10 +29,10 @@
 		{% endif %}
 		{% set attr_title = ( title is null ? '' : ' title="' ~ title ~ '"' ) %}
 		{% set attr_class = ( classes is empty ? '' : ' class="' ~ classes|join(' ')|trim ~ '"' ) %}
-		{% set openings = ( schedule.schedule is empty ? 'Closed' : transforms.niceOpenings(openhrs.opening.formatSchedule(schedule.schedule, 'g.ia', ['.i'])) ) %}
+		{% set hours_text = ( schedule.windows is empty ? (metadata.labels.off ?: 'PLUGIN_QUANDO.SERVICE_OFF')|t : transforms.niceWindows(calendar.formatSchedule(schedule.windows, 'g.ia', ['.i'])) ) %}
 		<tr{{ attr_title }}{{ attr_class }}>
 			<th scope= "row"><strong class="day">{{ schedule.day|date('l') }}</strong> <em class="date">{{ schedule.day|date('F j') }}</em></th>  {# FIXME: those strings need internationalising #}
-		<td>{{ openings }}</td>
+		<td>{{ hours_text }}</td>
 	</tr>
 	{% endfor %}
 </tbody>

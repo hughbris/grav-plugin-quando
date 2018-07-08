@@ -3,7 +3,10 @@ hours:
     timezone: "Pacific/Auckland"
     language: en # TODO: this should override any translations in the plugin's templates
     completed_until: "2018-11-16" # TODO: use this to set alerts for maintainers
+    microdata:
+      # type: Store # pick from https://schema.org/Service OR https://schema.org/Organization
     regular:
+      # sunday: [] # do this if you want a day to explicitly show as 'off'
       monday:
         - starts: "09:00"
           stops: "12:30"
@@ -72,3 +75,11 @@ hours:
     headings:
       regular: 'Regular hours'
       irregular: 'Special days'
+    labels:
+      on: 'PLUGIN_QUANDO.OPEN' # 'Yup'
+      off: 'PLUGIN_QUANDO.CLOSED' # 'Nope'
+      available_today: 'PLUGIN_QUANDO.OPEN_TODAY'
+      available_tomorrow: 'PLUGIN_QUANDO.OPENS_TOMORROW'
+      available_next: 'PLUGIN_QUANDO.OPENS_NEXT'
+      all_hours: 'PLUGIN_QUANDO.ALL_OPENING_HOURS'
+      our_hours: 'PLUGIN_QUANDO.OUR_OPENING_HOURS'

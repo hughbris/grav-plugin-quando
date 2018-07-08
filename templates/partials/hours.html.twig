@@ -1,4 +1,7 @@
-{% set schedules = quando.opening.regularTimetable() %}
+{% set calendar_name = calendar_name|default('opening') %}
+{% set calendar = quando[calendar_name] %}
+{% set timetable = calendar.regularTimetable() %}
+{% set metadata = calendar.getTimetable() %} {# for my tastes, this is a little clunky to get _some_ properties that happen to be metadata #}
 
 {# TODO: possibly this macro should just be a partial template like the short_time one but with lots of extra params #}
 {% macro microdataOpenings(schedule, range_symbol, delimiter, render_pattern, render_exclusions) -%}
@@ -21,7 +24,7 @@
 	{% endspaceless %}
 {%- endmacro microdataOpenings %}
 
-<h3>{{ quando.opening.getSchedule('headings').regular }}</h3>
+<h3>{{ calendar.getSchedule('headings').regular }}</h3>
 
 <table class="hours">
 	<thead>
@@ -30,14 +33,14 @@
 			<th scope="col">Hours</th>
 		</tr>
 	</thead>
-	<tbody vocab="http://schema.org/" typeof="Dentist">
+	<tbody vocab="http://schema.org/" typeof="{{ metadata.microdata.type|default('Organization') }}">
 		{% import _self as transforms %}
-		{% for day, schedule in schedules %}
+		{% for day, schedule in timetable %}
 			{# dump (schedule) #}
-			{% set openings = ( schedule is empty ? ' <span property="description">Closed</span>' : transforms.microdataOpenings(schedule) ) %} {# transforms.microdataOpenings(schedule) #}
+			{% set hours_text = ( schedule is empty ? ' <span property="description">' ~ (metadata.labels.off ?: 'PLUGIN_QUANDO.SERVICE_OFF')|t ~ '</span>' : transforms.microdataOpenings(schedule) ) %} {# transforms.microdataOpenings(schedule) #}
 			<tr property="openingHoursSpecification" typeof="OpeningHoursSpecification">
 				<th property="dayOfWeek" typeof="DayOfWeek" content="https://schema.org/{{ 'PLUGIN_QUANDO.DAYS_OF_WEEK'|tav(day,'en') }}" scope="row">{{ 'PLUGIN_QUANDO.DAYS_OF_WEEK'|tav(day)|pluralize }}</th>
-			<td>{{ openings }}</td>
+			<td>{{ hours_text }}</td>
 		</tr>
 		{% endfor %}
 
