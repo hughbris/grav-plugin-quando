@@ -1,7 +1,7 @@
 {% if config.plugins.quando.enabled %}
 {% set calendar_name = calendar_name|default('opening') %}
 {% set calendar = quando[calendar_name] %}
-{% set metadata = calendar.getTimetable() %} {# for my tastes, this is a little clunky to get _some_ properties that happen to be metadata #}
+{% set labels = calendar.getMeta('labels') %}
 <div class="panel hours">
 	<div class="highlight">
 		<h4>{{ 'PLUGIN_QUANDO.PANEL_WIDGET.HEADING'|t|capitalize }}</h4>
@@ -21,7 +21,7 @@
 		{% set hours_url = '/quando/demo' %}
 		{% if page.url|trim != hours_url %}
 		<ul class="related options">
-			<li><a rel="more" href="{{ hours_url }}">{{ (metadata.labels.our_hours ?: 'PLUGIN_QUANDO.OUR_SERVICE_HOURS')|t }}</a></li>
+			<li><a rel="more" href="{{ hours_url }}">{{ (labels.our_hours ?: 'PLUGIN_QUANDO.OUR_SERVICE_HOURS')|t }}</a></li>
 		</ul>
 		{% endif %}
 

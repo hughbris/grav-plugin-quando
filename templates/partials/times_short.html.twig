@@ -2,7 +2,7 @@
 {% set schedule = schedule|default(hours) %} {# TODO: deprecated parameter name hours #}
 
 {% set calendar = quando[calendar_name] %}
-{% set metadata = calendar.getTimetable() %} {# for my tastes, this is a little clunky to get _some_ properties that happen to be metadata #}
+{% set labels = calendar.getMeta('labels') %}
 
 {% spaceless %}
 {% for window in schedule %}
@@ -10,6 +10,6 @@
 	{% set stops = window.stops|default(window.finishes|default(window.shuts)) %} {# TODO: remove deprecated property 'shuts' #}
 	{{ starts|briefTime }} – {{ stops|briefTime }}{% if not loop.last %}, {% endif %}
 {% else %}
-	{{ ( metadata.labels.off ?: 'PLUGIN_QUANDO.SERVICE_OFF' )|t }}
+	{{ ( labels.off ?: 'PLUGIN_QUANDO.SERVICE_OFF' )|t }}
 {% endfor %}
 {% endspaceless %}

@@ -146,7 +146,7 @@ class ServiceTimes {
 	}
 
 	private function deprecatedMethodWarning($method_name) {
-		$this->grav['debugger']->addMessage("Call to deprecated $method_name rendering template \"{$this->grav['page']->template()}\"");
+		$this->grav['debugger']->addMessage("Warning: Call to deprecated $method_name rendering template \"{$this->grav['page']->template()}\"");
 	}
 
 	public function availableOn($day_name, $timetable=NULL) {
@@ -205,7 +205,7 @@ class ServiceTimes {
 	}
 
 	public function statusAt($dto, $includeNext=TRUE) {
-		$this->grav['debugger']->addMessage("Confirm template {$this->grav['page']->template()} or its inclusions do not use deprecated properties 'hours', 'open', 'open_on_day', or 'open_later_on_day'"); // TODO: remove deprecation warning
+		$this->grav['debugger']->addMessage("Notice: Confirm template {$this->grav['page']->template()} or its inclusions do not use deprecated properties 'hours', 'open', 'open_on_day', or 'open_later_on_day'"); // TODO: remove deprecation notice
 
 		$ret = [];
 		$dto->setTimezone($this->timezone);
@@ -357,6 +357,33 @@ class ServiceTimes {
 
 		// look for regular day matches
 		return $this->scheduleOn($day_name, $schedule['regular']);
+	}
+
+	/* retrieve (only!) specific metadata properties from calendar, or an indexed array of all allowed metadata properties' values */
+	public function getMeta($property=NULL) {
+		$allowed_properties = ['headings', 'labels', 'microdata'];
+
+		if (is_null($property)) {
+			$ret = [];
+			foreach($allowed_properties as $ap) {
+				$ret[$ap] = $this->calendar[$ap];
+			}
+			return $ret;
+		}
+
+		if (!array_key_exists($property, $this->calendar)) {
+			$this->grav['debugger']->addMessage("Warning: ServiceTimes::getMeta() called for non-existent property \"$property\" rendering template \"{$this->grav['page']->template()}\"");
+			return [];
+		}
+
+		if (!in_array($property, $allowed_properties)) {
+			$this->grav['debugger']->addMessage("Warning: ServiceTimes::getMeta() called for disallowed property \"$property\" rendering template \"{$this->grav['page']->template()}\"");
+			return [];
+		}
+
+		// else
+		return($this->calendar[$property]);
+
 	}
 
 	/* ******************************************************************* */

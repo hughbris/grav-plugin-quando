@@ -3,7 +3,7 @@
 
 {% set calendar = quando[calendar_name] %}
 {% set schedules = calendar.schedulesWeek(date(), days_context) %}
-{% set metadata = calendar.getTimetable() %} {# for my tastes, this is a little clunky to get _some_ properties that happen to be metadata #}
+{% set labels = calendar.getMeta('labels') %}
 {{ dump(schedules) }}
 <tbody>
 	{% import 'partials/current_status.html.twig' as transforms %}
@@ -29,7 +29,7 @@
 		{% endif %}
 		{% set attr_title = ( title is null ? '' : ' title="' ~ title ~ '"' ) %}
 		{% set attr_class = ( classes is empty ? '' : ' class="' ~ classes|join(' ')|trim ~ '"' ) %}
-		{% set hours_text = ( schedule.windows is empty ? (metadata.labels.off ?: 'PLUGIN_QUANDO.SERVICE_OFF')|t : transforms.niceWindows(calendar.formatSchedule(schedule.windows, 'g.ia', ['.i'])) ) %}
+		{% set hours_text = ( schedule.windows is empty ? (labels.off ?: 'PLUGIN_QUANDO.SERVICE_OFF')|t : transforms.niceWindows(calendar.formatSchedule(schedule.windows, 'g.ia', ['.i'])) ) %}
 		<tr{{ attr_title }}{{ attr_class }}>
 			<th scope= "row"><strong class="day">{{ schedule.day|date('l') }}</strong> <em class="date">{{ schedule.day|date('F j') }}</em></th>  {# FIXME: those strings need internationalising #}
 		<td>{{ hours_text }}</td>

@@ -87,6 +87,7 @@ _RENAMED from 'Opnhrs'_
 * _array_ **schedulesWeek**(_DateTime_ start_dto, _integer_ days_context(=NULL)): Return a date-indexed array of 7 schedules from _days_context_ days before _start_dto_.
 * _Timetable_ **regularTimetable**(): Return the `regular` _timetable_ for the current _calendar_. _RENAMED from 'regularSchedule'_
 * _Timetable_ **getTimetable**(_string_ member(=NULL)): Return every _timetable_ in the current _calendar_, or just the one named "_member_". _RENAMED from 'getSchedule'_
+* _array_ **getMeta**(_string_ property(=NULL)): Return an indexed array of allowed metadata properties from the calendar ('microdata', 'headings', 'labels'), or just the one named "_property_" if it's in the allowed list.
 
 ## Examples in the wild
 

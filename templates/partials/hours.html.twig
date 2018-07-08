@@ -1,7 +1,7 @@
 {% set calendar_name = calendar_name|default('opening') %}
 {% set calendar = quando[calendar_name] %}
 {% set timetable = calendar.regularTimetable() %}
-{% set metadata = calendar.getTimetable() %} {# for my tastes, this is a little clunky to get _some_ properties that happen to be metadata #}
+{% set metadata = calendar.getMeta() %}
 
 {# TODO: possibly this macro should just be a partial template like the short_time one but with lots of extra params #}
 {% macro microdataOpenings(schedule, range_symbol, delimiter, render_pattern, render_exclusions) -%}
@@ -24,7 +24,7 @@
 	{% endspaceless %}
 {%- endmacro microdataOpenings %}
 
-<h3>{{ calendar.getSchedule('headings').regular }}</h3>
+<h3>{{ metadata.headings.regular }}</h3>
 
 <table class="hours">
 	<thead>

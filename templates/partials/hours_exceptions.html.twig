@@ -1,6 +1,6 @@
 {% set calendar_name = calendar_name|default('opening') %}
 {% set calendar = quando[calendar_name] %}
-{% set metadata = calendar.getTimetable() %} {# for my tastes, this is a little clunky to get _some_ properties that happen to be metadata #}
+{% set headings = calendar.getMeta('headings') %}
 {% set periods = calendar.getTimetable('periods') %}
 {% set exceptions = calendar.getTimetable('exceptions') %}
 
@@ -11,7 +11,7 @@
 {# TODO: suppress all this if there are none coming up #}
 {# if periods|merge(exceptions) is not empty #}
 
-<h4>{{ metadata.headings.irregular }}</h4>
+<h4>{{ headings.irregular }}</h4>
 
 <div class="exceptions">
 
