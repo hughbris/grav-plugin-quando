@@ -4,6 +4,8 @@ The **Quando** Plugin is for [Grav CMS](http://github.com/getgrav/grav).
 
 It exposes business opening hours and other service hours to Grav as a Twig hash. It provides starter templates you might want to copy into your theme, customise, and include.
 
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=dev%40hubns%2ecom&lc=EN&item_name=Hugh%20Barnes&item_number=quando-plugin&currency_code=USD) [more about sponsoring or donating](#sponsoring-this-plugin)
+
 ## Is this fit for your purposes?
 
 There are a few real world scenarios which are not supported yet by the plugin and some bugs affecting some scenarios. Be aware of these issues and make sure they don't affect you before you get too far here:
@@ -93,6 +95,28 @@ _RENAMED from 'Opnhrs'_
 
 * [QE2 Dental opening hours](https://qe2dental.co.nz/about/opening) page
 * [Quando's official demo](http://behold.metamotive.co.nz/quando)
+
+Please let me know of any others (hey, it's free publicity).
+
+## Sponsoring this plugin
+
+This plugin was created out of a client requirement but has been developed beyond that basic and specific capability _in my own time_, as I've been able to find it. (Not suggesting that's unusual or heroic.)
+
+I recognised that this functionality is likely to be a common requirement, so wanted to make a simple plugin available for everyone to benefit from. Service hours are one of the main things I want to find out from business websites, especially when I have an immediate requirement on a mobile device.
+
+If you would like a specific capability built in, do submit a feature request as an issue here and I will consider it regardless of whether you offer to sponsor its development. However, any contribution is likely to incentivise me to develop it much sooner. Unless your request is very specific to your site (and not useful to others), I will insist that sponsored developments remain open source and therefore free for the community to benefit from. I will gladly credit and link to any sponsors.
+
+I can also help you implement this plugin on your site, although I hope to reach a point where site builders won't need much help. I don't expect payment for this help (within constraints), but please consider contributing if you are able to.
+
+I only request financial contributions because I am currently in a needy situation.
+
+[This project's license](LICENSE) of course allows you to create and develop your own variant. I also welcome contributions of code, ideas, or documentation.
+
+### Use Paypal or credit card
+
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=dev%40hubns%2ecom&lc=EN&item_name=Hugh+Barnes&item_number=quando-plugin&currency_code=USD)
+
+> **Note:** I don't particularly want to require Paypal or credit card payment and am investigating other options for you.
 
 ## Credits
 
