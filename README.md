@@ -4,7 +4,7 @@ The **Quando** Plugin is for [Grav CMS](http://github.com/getgrav/grav).
 
 It exposes business opening hours and other service hours to Grav as a Twig hash. It provides starter templates you might want to copy into your theme, customise, and include.
 
-[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=dev%40hubns%2ecom&lc=EN&item_name=Hugh%20Barnes&item_number=quando-plugin&currency_code=USD) [more about sponsoring or donating](#sponsoring-this-plugin)
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=dev%40hubns%2ecom&lc=EN&item_name=Hugh+Barnes&item_number=quando-plugin&currency_code=USD) → [.. _about sponsoring or donating_ ↓](#sponsoring-this-plugin)
 
 ## Is this fit for your purposes?
 
