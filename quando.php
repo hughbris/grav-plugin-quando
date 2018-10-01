@@ -366,7 +366,9 @@ class ServiceTimes {
 		if (is_null($property)) {
 			$ret = [];
 			foreach($allowed_properties as $ap) {
-				$ret[$ap] = $this->calendar[$ap];
+				if (array_key_exists($ap, $this->calendar)) { // prevents a Twig error if labels is not declared, not sure if I should be requiring it instead
+					$ret[$ap] = $this->calendar[$ap];
+				}
 			}
 			return $ret;
 		}
