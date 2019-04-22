@@ -46,6 +46,7 @@ class QuandoPlugin extends Plugin
     public function addTwigExtensions() {
         // require_once(__DIR__ . '/twig/ExampleTwigExtension.php');
         $this->grav['twig']->twig->addExtension(new DatetimeFormatExtension());
+        $this->grav['twig']->twig->addExtension(new DatetimeFilterExtension());
         $this->grav['twig']->twig->addExtension(new TranslateExtension());
     }
 
@@ -82,6 +83,42 @@ class DatetimeFormatExtension extends \Twig_Extension {
             new \Twig_SimpleFilter('briefTime', 'Grav\Plugin\ServiceTimes::briefTime'),
         ];
     }
+
+}
+
+class DatetimeFilterExtension extends \Twig_Extension {
+
+    public function getName() {
+        return 'DatetimeFilterExtension';
+    }
+
+    public function getFilters() {
+        return [
+            new \Twig_SimpleFilter('only_dates_from', [$this, 'excludeDatesBefore']),
+            new \Twig_SimpleFilter('only_periods_from', [$this, 'excludePeriodsBefore']),
+        ];
+	}
+
+	private function defaultToday(&$dstr) {
+		if(is_null($dstr)) {
+			$dstr = (new \DateTime())->format('Y-m-d');
+		}
+	}
+
+	public function excludeDatesBefore($dates, $date_ymd=NULL) {
+		$this->defaultToday($date_ymd);
+		return array_filter($dates, function($dt) use ($date_ymd) {
+			return ($dt >= $date_ymd);
+			}, ARRAY_FILTER_USE_KEY);
+	}
+
+	public function excludePeriodsBefore($periods, $date_ymd=NULL) {
+		$this->defaultToday($date_ymd);
+		return array_filter($periods, function($prd) use ($date_ymd) {
+			$ends = array_key_exists('end', $prd) ? $prd['end'] : $prd['finish']; // TODO: deprecated array member 'finish'
+			return ($ends >= $date_ymd);
+			});
+	}
 
 }
 
