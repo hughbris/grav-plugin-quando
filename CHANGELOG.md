@@ -46,5 +46,9 @@
     * Proper changelog for submission to Grav repo
 
 # v0.6.3
-1. [](#improved)
+1. [](#new)
+    * `only_after` parameter for partials/hours_exceptions template to limit how far back exceptions display goes
+    * `suppress_if_empty` parameter for partials/hours_exceptions template to hide exceptions display completely when it has no items
+2. [](#improved)
     * Sort exception periods and days all in together
+

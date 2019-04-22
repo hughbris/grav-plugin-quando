@@ -1,4 +1,4 @@
-{# @parameters: only_after ; suppress_if_empty (TODO) #}
+{# @parameters: only_after ; suppress_if_empty #}
 {% set calendar_name = calendar_name|default('opening') %}
 {% set calendar = quando[calendar_name] %}
 {% set headings = calendar.getMeta('headings') %}
@@ -10,10 +10,11 @@
 	{% set periods = periods|only_periods_from(only_after) %}
 {% endif %}
 
-{# TODO: suppress all this if there are none coming up #}
-{# if periods|merge(exceptions) is not empty #}
-
+{# suppress all this if there are none coming up and suppress_if_empty is true #}
+{% if not (suppress_if_empty and periods|merge(exceptions) is empty) %}
 <h4>{{ headings.irregular }}</h4>
+{# TODO: maybe some translatable text here under the heading in place of the block below
+   if the results are empty #}
 
 <div class="exceptions">
 
@@ -47,3 +48,4 @@
 	{% endfor %}
 
 </div>
+{% endif %}
