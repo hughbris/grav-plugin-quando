@@ -44,3 +44,7 @@
 ## 03-10-2018
 1. [](#improved)
     * Proper changelog for submission to Grav repo
+
+# v0.6.3
+1. [](#improved)
+    * Sort exception periods and days all in together

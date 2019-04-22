@@ -6,8 +6,6 @@
 
 {# TODO: provide an option to hide exceptions from last year (or periods) and support it below #}
 
-{# TODO: create a chrono sequenced merged list for sensible presentation #}
-
 {# TODO: suppress all this if there are none coming up #}
 {# if periods|merge(exceptions) is not empty #}
 
@@ -15,21 +13,33 @@
 
 <div class="exceptions">
 
+	{% set display_items = {} %}
+
 	{% for period in periods %}
 		{% set begins = date(period.begin ?: period.start) %} {# TODO: deprecated property name period.start #}
 		{% set ends = date(period.end ?: period.finish) %} {# TODO: deprecated property name period.finish #}
+		{% set display_item_value %}
 		<div class="period">
 			<p>{{ begins|date('l') }} <strong>{{ begins|date('F j') }}</strong>{% if 'now'|date('Y') != begins|date('Y') %}, {{ begins|date('Y') }}{% endif %} to {{ ends|date('l') }} <strong>{{ ends|date('F j') }}</strong>{% if 'now'|date('Y') != ends|date('Y') %}, {{ ends|date('Y') }} {% endif %}:</p>
 			<p style="margin-left: 2em">{{ period.description }}<em> ({{ period.name }})</em></p>
-
-			{# TODO: show any hours here, hey !!! #}
-
+			{# TODO: show any hours here, hey !!! issue #4 #}
 		</div>
+		{% endset %}
+		{% set display_item_key = begins|date('Y-m-d') %}
+		{% set display_items = display_items|merge({ (display_item_key): display_item_value}) %}
 	{% endfor %}
 
-	{% for d, exception in exceptions|ksort %}
+	{% for d, exception in exceptions %}
 		{% set day = date(d) %}
+		{% set display_item_value %}
 		<p>{{ day|date('l') }} <strong>{{ day|date('F j') }}</strong>{% if 'now'|date('Y') != day|date('Y') %}, {{ day|date('Y') }}{% endif %}: {% include 'partials/times_short.html.twig' with { 'schedule': exception.hours,  'calendar_name': calendar_name } %}{% if exception.comment is defined %} <em>({{ exception.comment }})</em>{% endif %}</p>
+		{% endset %}
+		{% set display_item_key = day|date('Y-m-d') %}
+		{% set display_items = display_items|merge({ (display_item_key): display_item_value}) %}
+	{% endfor %}
+
+	{% for display in display_items|ksort %}
+		{{ display }}
 	{% endfor %}
 
 </div>
