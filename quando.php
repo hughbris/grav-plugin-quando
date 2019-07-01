@@ -325,12 +325,14 @@ class ServiceTimes {
 		if ($day_name) {
 
 			// look for period matches
-			// NB - we are taking first match from periods array, so that's the precedence
-			foreach($this->calendar['periods'] as $period) {
-				$begins = array_key_exists('begin', $period) ? $period['begin'] : $period['start']; // TODO: remove deprecated property 'start' eventually
-				$ends = array_key_exists('end', $period) ? $period['end'] : $period['finish']; // TODO: remove deprecated property 'finish' eventually
-				if ( $begins <= $date_ymd AND $ends >= $date_ymd ) {
-					return $this->findInSchedule($day_name, $date_ymd, $period);
+			if(array_key_exists('periods', $this->calendar)) {
+				// NB - we are taking first match from periods array, so that's the precedence
+				foreach($this->calendar['periods'] as $period) {
+					$begins = array_key_exists('begin', $period) ? $period['begin'] : $period['start']; // TODO: remove deprecated property 'start' eventually
+					$ends = array_key_exists('end', $period) ? $period['end'] : $period['finish']; // TODO: remove deprecated property 'finish' eventually
+					if ( $begins <= $date_ymd AND $ends >= $date_ymd ) {
+						return $this->findInSchedule($day_name, $date_ymd, $period);
+					}
 				}
 			}
 
