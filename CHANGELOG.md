@@ -52,3 +52,6 @@
 2. [](#improved)
     * Sort exception periods and days all in together
 
+# v0.6.4
+1. [](#bugfix)
+    * Handle missing `periods` member in config YAML [#13](https://github.com/hughbris/grav-plugin-quando/issues/13)

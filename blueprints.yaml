@@ -1,5 +1,5 @@
 name: Quando
-version: 0.6.1
+version: 0.6.4
 description: 'Stores and exposes business opening and service-specific hours to Grav/Twig. Provides some starter templates.'
 icon: plug
 author:
