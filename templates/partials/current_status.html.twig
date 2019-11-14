@@ -43,3 +43,8 @@
 
 {# dump(transforms.niceWindows(service_status.debug)) #}
 {% endspaceless %}
+
+{% do calendar.addNodeStatusToggle('.badge', {
+	'class': ['closed', 'open'],
+	'text': ['Closed', 'Open'],
+	}) %}

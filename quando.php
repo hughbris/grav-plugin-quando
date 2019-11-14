@@ -427,6 +427,16 @@ class ServiceTimes {
 
 	}
 
+	public function addNodeStatusToggle($selector, $replacements=[]) {
+		$this->grav['assets']->addJs('plugin://quando/assets/quando.js', ['group'=>'bottom']);
+
+		$jcal = json_encode($this->calendar);
+		$replacements = json_encode($replacements);
+		$js = "(new Quando($jcal)).scheduleToggle('$selector', $replacements);";
+
+		$this->grav['assets']->addInlineJs($js, ['group'=>'bottom']); // FIXME: this 'bottom' needs to be a setting because it won't work in every theme (or we just use deferred asset calls)
+	}
+
 	/* ******************************************************************* */
 	/* Deprecated methods below retained for API compatibility: DO NOT USE */
 
