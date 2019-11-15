@@ -3,6 +3,9 @@ namespace Grav\Plugin;
 
 use Grav\Common\Plugin;
 use RocketTheme\Toolbox\Event\Event;
+use Grav\Common\Page\Page;
+use Grav\Common\Uri;
+use Grav\Framework\Uri\UriFactory;
 
 /**
  * Class QuandoPlugin
@@ -10,45 +13,74 @@ use RocketTheme\Toolbox\Event\Event;
  */
 class QuandoPlugin extends Plugin
 {
-    /**
-     * @return array
-     *
-     * The getSubscribedEvents() gives the core a list of events
-     *     that the plugin wants to listen to. The key of each
-     *     array section is the event that the plugin listens to
-     *     and the value (in the form of an array) contains the
-     *     callable (or function) as well as the priority. The
-     *     higher the number the higher the priority.
-     */
-    public static function getSubscribedEvents() {
-        return [
-            'onPluginsInitialized' => ['initializeIfRequired', 0],
-        ];
-    }
+	/**
+	 * @return array
+	 *
+	 * The getSubscribedEvents() gives the core a list of events
+	 *     that the plugin wants to listen to. The key of each
+	 *     array section is the event that the plugin listens to
+	 *     and the value (in the form of an array) contains the
+	 *     callable (or function) as well as the priority. The
+	 *     higher the number the higher the priority.
+	 */
+	public static function getSubscribedEvents() {
+		return [
+			'onPluginsInitialized' => ['initializeIfRequired', 0],
+		];
+	}
 
-    /**
-     * Initialize the plugin
-     */
-    public function initializeIfRequired() {
-        // Don't proceed if we are in the admin plugin
-        if ($this->isAdmin()) {
-            return;
-        }
+	/**
+	 * Initialize the plugin
+	 */
+	public function initializeIfRequired() {
+		// Don't proceed if we are in the admin plugin
+		if ($this->isAdmin()) {
+			return;
+		}
 
-        // Enable the main event we are interested in
-        $this->enable([
-            'onTwigSiteVariables' => ['initializePlugin', 0],
-            'onTwigTemplatePaths' => ['addTwigTemplatePaths', 0],
-            'onTwigExtensions' => ['addTwigExtensions', 0],
-        ]);
-    }
+		// Enable the main event we are interested in
+		$this->enable([
+			'onPageNotFound' => ['onPageNotFound', 100],
+			'onTwigSiteVariables' => ['initializePlugin', 0],
+			'onTwigTemplatePaths' => ['addTwigTemplatePaths', 0],
+			'onTwigExtensions' => ['addTwigExtensions', 0],
+		]);
+	}
 
-    public function addTwigExtensions() {
-        // require_once(__DIR__ . '/twig/ExampleTwigExtension.php');
-        $this->grav['twig']->twig->addExtension(new DatetimeFormatExtension());
-        $this->grav['twig']->twig->addExtension(new DatetimeFilterExtension());
-        $this->grav['twig']->twig->addExtension(new TranslateExtension());
-    }
+	public function onPageNotFound(Event $event)
+	{
+		/** @var Pages $pages */
+		$pages = $this->grav['pages'];
+		$config = $this->grav['config'];
+		$site_routes = [
+			'/data/plugins/quando/status'=>'statusNow',
+			];
+		$route_requested = Uri::getCurrentRoute()->getRoute();
+
+		if (in_array($route_requested, array_keys($site_routes))) {
+			$method = $site_routes[$route_requested];
+			$page = new Page;
+			$page->init(new \SplFileInfo(__DIR__ . '/pages/data/api.md'));
+
+			$this->initializePlugin();
+			$payload = [];
+			foreach($this->grav['twig']->twig_vars['quando'] as $label => $calendar) {
+				$payload[$label] = call_user_func(array($calendar, $method));
+			}
+			$this->grav['twig']->twig_vars['payload'] = $payload;
+
+			$page->templateFormat('json');
+			$event->page = $page;
+			$event->stopPropagation();
+		}
+	}
+
+	public function addTwigExtensions() {
+		// require_once(__DIR__ . '/twig/ExampleTwigExtension.php');
+		$this->grav['twig']->twig->addExtension(new DatetimeFormatExtension());
+		$this->grav['twig']->twig->addExtension(new DatetimeFilterExtension());
+		$this->grav['twig']->twig->addExtension(new TranslateExtension());
+	}
 
 	/**
 	* Add current directory to twig lookup paths.
@@ -58,7 +90,7 @@ class QuandoPlugin extends Plugin
 		$this->grav['twig']->twig_paths[] = __DIR__ . '/templates';
 	}
 
-    public function initializePlugin() {
+	public function initializePlugin() {
 		// NB: $services_times vs. $service_times !!
 		$services_times = $this->config['plugins']['quando']['hours'];
 
@@ -74,29 +106,29 @@ class QuandoPlugin extends Plugin
 
 class DatetimeFormatExtension extends \Twig_Extension {
 
-    public function getName() {
-        return 'DatetimeFormatExtension';
-    }
+	public function getName() {
+		return 'DatetimeFormatExtension';
+	}
 
-    public function getFilters() {
-        return [
-            new \Twig_SimpleFilter('briefTime', 'Grav\Plugin\ServiceTimes::briefTime'),
-        ];
-    }
+	public function getFilters() {
+		return [
+			new \Twig_SimpleFilter('briefTime', 'Grav\Plugin\ServiceTimes::briefTime'),
+		];
+	}
 
 }
 
 class DatetimeFilterExtension extends \Twig_Extension {
 
-    public function getName() {
-        return 'DatetimeFilterExtension';
-    }
+	public function getName() {
+		return 'DatetimeFilterExtension';
+	}
 
-    public function getFilters() {
-        return [
-            new \Twig_SimpleFilter('only_dates_from', [$this, 'excludeDatesBefore']),
-            new \Twig_SimpleFilter('only_periods_from', [$this, 'excludePeriodsBefore']),
-        ];
+	public function getFilters() {
+		return [
+			new \Twig_SimpleFilter('only_dates_from', [$this, 'excludeDatesBefore']),
+			new \Twig_SimpleFilter('only_periods_from', [$this, 'excludePeriodsBefore']),
+		];
 	}
 
 	private function defaultToday(&$dstr) {
@@ -124,15 +156,15 @@ class DatetimeFilterExtension extends \Twig_Extension {
 
 class TranslateExtension extends \Twig_Extension {
 
-    public function getName() {
-        return 'TranslateExtension';
-    }
+	public function getName() {
+		return 'TranslateExtension';
+	}
 
-    public function getFilters() {
-        return [
-            new \Twig_SimpleFilter('tav', [$this, 'translateArrayUsingValue']),
-        ];
-    }
+	public function getFilters() {
+		return [
+			new \Twig_SimpleFilter('tav', [$this, 'translateArrayUsingValue']),
+		];
+	}
 
 	public function translateArrayUsingValue($key, $term, $lang=NULL, $case_sensitive= FALSE, $default=NULL) {
 		global $grav;
@@ -219,7 +251,7 @@ class ServiceTimes {
 		}
 	}
 
-    public static function briefTime($timeOfDay, $pattern='g.ia', $truncateZeroComponents=['.i']) {
+	public static function briefTime($timeOfDay, $pattern='g.ia', $truncateZeroComponents=['.i']) {
 		$to = \DateTime::createFromFormat('Y-m-d H:i', "1970-01-01 $timeOfDay"); // $to is "time object" (no significant date component)
 		$mod_pattern = $pattern;
 		foreach ($truncateZeroComponents as $truncateableComponent) {
@@ -228,7 +260,7 @@ class ServiceTimes {
 			}
 		}
 		return $to->format($mod_pattern);
-    }
+	}
 
 	public static function formatSchedule($schedule, $pattern, $truncateZeroComponents=[]) {
 		$ret = [];
@@ -260,6 +292,10 @@ class ServiceTimes {
 
 	public function availableAt($dto) {
 		return $this->statusAt($dto, FALSE)['open'];
+	}
+
+	public function statusNow($includeNext=TRUE) {
+		return $this->statusAt(new \DateTime(), $includeNext);
 	}
 
 	public function isAvailable() {

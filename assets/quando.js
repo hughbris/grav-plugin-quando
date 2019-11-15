@@ -17,7 +17,7 @@ function Quando(calendar) {
 		return Date.now() + 5000;
 		};
 
-	this.getStatus = function() {  // PHP: isAvailable()
+	this.getStatus = function() {  // PHP: isAvailable() $dto->statusAt['open']
 		var status = Boolean(Math.round(Math.random()));
 		console.log('Randomly changing to ' + status);
 		return status; // FIXME
