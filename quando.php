@@ -57,7 +57,7 @@ class QuandoPlugin extends Plugin
 			];
 		$route_requested = Uri::getCurrentRoute()->getRoute();
 
-		if (in_array($route_requested, array_keys($site_routes))) {
+		if (array_key_exists($route_requested, $site_routes)) {
 			$method = $site_routes[$route_requested];
 			$page = new Page;
 			$page->init(new \SplFileInfo(__DIR__ . '/pages/data/api.md'));
@@ -91,15 +91,17 @@ class QuandoPlugin extends Plugin
 	}
 
 	public function initializePlugin() {
-		// NB: $services_times vs. $service_times !!
-		$services_times = $this->config['plugins']['quando']['hours'];
+		if (!array_key_exists('quando', $this->grav['twig']->twig_vars)) { // may have been explicitly called earlier
+			// NB: $services_times vs. $service_times !!
+			$services_times = $this->config['plugins']['quando']['hours'];
 
-		$calendars = [];
-		foreach($services_times as $name => $service_times) {
-			$calendars[$name] = new ServiceTimes($service_times);
+			$calendars = [];
+			foreach($services_times as $name => $service_times) {
+				$calendars[$name] = new ServiceTimes($service_times);
+			}
+			$this->grav['twig']->twig_vars['openhrs'] = $calendars; // TODO: remove deprecated name
+			$this->grav['twig']->twig_vars['quando'] = $calendars;
 		}
-		$this->grav['twig']->twig_vars['openhrs'] = $calendars; // TODO: remove deprecated name
-		$this->grav['twig']->twig_vars['quando'] = $calendars;
 	}
 
 }
