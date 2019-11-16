@@ -26,7 +26,7 @@ function Quando(calendar) {
 		xhr.send();
 		};
 
-	this.scheduleToggle = function(selector, replacements) {
+	this.scheduleStatusToggle = function(selector, replacements) {
 		// you are allowed to replace one class and all text to a literal string, e.g.
 		/*
 			{
@@ -38,16 +38,16 @@ function Quando(calendar) {
 		if (document.querySelectorAll) {
 			var domElements = document.querySelectorAll(selector);
 			if (domElements.length == 0) {
-				console.log('No elements match the selector "' + selector + '" in Quando.scheduleToggle');
+				console.log('No elements match the selector "' + selector + '" in Quando.scheduleStatusToggle');
 				return;
 			}
 		}
 		else {
-			console.log('Quando.scheduleToggle() is aborted because document.querySelectorAll is not available');
+			console.log('Quando.scheduleStatusToggle() is aborted because document.querySelectorAll is not available');
 			return;
 		}
 		if(replacements === undefined) {
-			console.log('No DOM replacements passed to Quando.scheduleToggle()!');
+			console.log('No DOM replacements passed to Quando.scheduleStatusToggle()!');
 			return;
 			}
 
@@ -57,7 +57,7 @@ function Quando(calendar) {
 			console.log(__this.lastStatus.until.date);
 			var interval = nextToggle - Date.now();
 			if(interval < 0) { // by some terrible luck
-				__this.scheduleToggle(selector, replacements); // we'll just try again
+				__this.scheduleStatusToggle(selector, replacements); // we'll just try again
 				return;
 			}
 			var onNow = __this.lastStatus.available;
@@ -86,7 +86,7 @@ function Quando(calendar) {
 				}
 
 				// now set the next change toggle schedule, and so it goes ..
-				__this.scheduleToggle(selector, replacements);
+				__this.scheduleStatusToggle(selector, replacements);
 				}, interval);
 			});
 		};
