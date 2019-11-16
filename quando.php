@@ -97,6 +97,7 @@ class QuandoPlugin extends Plugin
 
 			$calendars = [];
 			foreach($services_times as $name => $service_times) {
+				$service_times['name'] = $name;
 				$calendars[$name] = new ServiceTimes($service_times);
 			}
 			$this->grav['twig']->twig_vars['openhrs'] = $calendars; // TODO: remove deprecated name
@@ -192,7 +193,7 @@ class TranslateExtension extends \Twig_Extension {
 }
 
 class ServiceTimes {
-	private $calendar;
+	private $calendar, $timezone, $name;
 	const DOW = [
 		'sunday'    => 0,
 		'monday'    => 1,
@@ -212,6 +213,7 @@ class ServiceTimes {
 
 	private function load($calendar) {
 		$this->calendar = $calendar;
+		$this->name = $calendar['name'];
 		$this->timezone = new \DateTimeZone($this->calendar['timezone']);
 		// TODO - validate the times ??
 	}
