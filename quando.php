@@ -134,12 +134,16 @@ class TranslateExtension extends \Twig_Extension {
         ];
     }
 
-	public function translateArrayUsingValue($key, $term, $lang=NULL, $case_sensitive= FALSE, $default=NULL) {
+	public function translateArrayUsingValue($key, $term, $lang=NULL, $case_sensitive=FALSE, $default=NULL) {
 		global $grav;
 
 		if (is_null($lang)) {
-			$lang = $grav['language']->getDefault();
+			$lang = $grav['language']->getActive();
+			if(is_null($lang)) {
+				$lang = 'en'; // FIXME: yeah, I don't know about this workaround or why default language can be false (or active language null). For now, this prevents a fatal error when language settings are not provided in system.yaml. OTOH there's precedent in core for this kind of kludge: https://github.com/getgrav/grav/blob/42084ea0cb5f3aebcb385a1a797af72000b6d1e1/system/src/Grav/Common/Language/Language.php#L421
+			}
 		}
+
 		$vocab = $grav['language']->getTranslation($lang, $key, TRUE);
 
 		if (!$case_sensitive) {
