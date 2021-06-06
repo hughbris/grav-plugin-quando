@@ -20,7 +20,7 @@
 			{% endset %}
 			{% set output = output|merge([markup]) %}
 		{% endfor %}
-		{{ output|join(delimiter|default(', '))|trim }} {# FIXME - don't think this is correct as per spec #}
+		{{ output|join(delimiter|default(', '))|trim|raw }} {# FIXME - don't think this is correct as per spec #}
 	{% endspaceless %}
 {%- endmacro microdataOpenings %}
 
