@@ -4,8 +4,6 @@ The **Quando** Plugin is for [Grav CMS](http://github.com/getgrav/grav).
 
 It exposes business opening hours and other service hours to Grav as a Twig hash. It provides starter templates you might want to copy into your theme, customise, and include.
 
-[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=dev%40hubns%2ecom&lc=EN&item_name=Hugh+Barnes&item_number=quando-plugin&currency_code=USD) → [.. _about sponsoring or donating_ ↓](#sponsoring-this-plugin)
-
 ## Is this fit for your purposes?
 
 There are a few real world scenarios which are not supported yet by the plugin and some bugs affecting some scenarios. Be aware of these issues and make sure they don't affect you before you get too far here:
@@ -14,6 +12,10 @@ There are a few real world scenarios which are not supported yet by the plugin a
 * [Irregular periods containing service hours don't show the hours yet (#4)](https://github.com/hughbris/grav-plugin-quando/issues/4)
 * [Incomplete/untested microformats support (#3)](https://github.com/hughbris/grav-plugin-quando/issues/3)
 * [YAML configuration is currently by hand (#2)](https://github.com/hughbris/grav-plugin-quando/issues/2)
+
+### Alternative plugin
+
+It's much simpler to use @bjoernbohr's [https://github.com/bjoernbohr/opening-hours](Opening Hours plugin) if that covers your needs. It offers far fewer options for customisation but is much simpler to understand and implement.
 
 ## Installation
 
@@ -112,12 +114,6 @@ I only request financial contributions because I am currently in a needy situati
 
 [This project's license](LICENSE) of course allows you to create and develop your own variant. I also welcome contributions of code, ideas, or documentation.
 
-### Use Paypal or credit card
-
-[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=dev%40hubns%2ecom&lc=EN&item_name=Hugh+Barnes&item_number=quando-plugin&currency_code=USD)
-
-> **Note:** I don't particularly want to require Paypal or credit card payment and am investigating other options for you.
-
 ## Credits
 
 I had this in my original composer.json for some reason: https://github.com/spatie/opening-hours. I'm sorry, I can't remember, but it looks like I have been inspired heavily by this, its API especially.
@@ -125,4 +121,3 @@ I had this in my original composer.json for some reason: https://github.com/spat
 ## To Do
 
 It's all supposed to be in the Issues. (Github make it non-trivial for me to reliably link there in any relative way. I'm sorry for that unfortunate fail. But hey, you can do emojis and fontawesome in markdown - that's important, right?)
-
