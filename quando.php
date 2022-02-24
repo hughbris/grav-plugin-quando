@@ -27,7 +27,6 @@ class QuandoPlugin extends Plugin
 
 		// Enable the main event we are interested in
 		$this->enable([
-			'onPageNotFound' => ['onPageNotFound', 100],
 			'onTwigSiteVariables' => ['initializePlugin', 0],
 			'onTwigTemplatePaths' => ['addTwigTemplatePaths', 0],
 			'onTwigExtensions' => ['addTwigExtensions', 0],

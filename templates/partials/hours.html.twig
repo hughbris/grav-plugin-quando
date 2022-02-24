@@ -40,7 +40,7 @@
 			{% set hours_text = ( schedule is empty ? ' <span property="description">' ~ (metadata.labels.off ?: 'PLUGIN_QUANDO.SERVICE_OFF')|t ~ '</span>' : transforms.microdataOpenings(schedule) ) %} {# transforms.microdataOpenings(schedule) #}
 			<tr property="openingHoursSpecification" typeof="OpeningHoursSpecification">
 				<th property="dayOfWeek" typeof="DayOfWeek" content="https://schema.org/{{ 'PLUGIN_QUANDO.DAYS_OF_WEEK'|tav(day,'en') }}" scope="row">{{ 'PLUGIN_QUANDO.DAYS_OF_WEEK'|tav(day)|pluralize }}</th>
-			<td>{{ hours_text }}</td>
+			<td>{{ hours_text|raw }}</td>
 		</tr>
 		{% endfor %}
 
