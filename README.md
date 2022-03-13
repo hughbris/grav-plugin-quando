@@ -15,7 +15,7 @@ There are a few real world scenarios which are not supported yet by the plugin a
 
 ### Alternative plugin
 
-It's much simpler to use @bjoernbohr's [https://github.com/bjoernbohr/opening-hours](Opening Hours plugin) if that covers your needs. It offers far fewer options for customisation but is much simpler to understand and implement.
+It's much simpler to use @bjoernbohr's [Opening Hours plugin](https://github.com/bjoernbohr/opening-hours) if that covers your needs. It offers far fewer options for customisation but is much simpler to understand and implement.
 
 ## Installation
 
