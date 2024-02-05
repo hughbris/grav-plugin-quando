@@ -10,6 +10,6 @@
 	{% set stops = window.stops|default(window.finishes|default(window.shuts)) %} {# TODO: remove deprecated property 'shuts' #}
 	{{ starts|briefTime }} – {{ stops|briefTime }}{% if not loop.last %}, {% endif %}
 {% else %}
-	{{ ( labels.off ?: 'PLUGIN_QUANDO.SERVICE_OFF' )|t }}
+	{{ ( labels.off ?: 'PLUGIN_QUANDO.SERVICE_OFF' )|t|raw }}
 {% endfor %}
 {% endspaceless %}

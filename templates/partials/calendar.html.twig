@@ -22,7 +22,7 @@
 		{% set classes = [] %}
 
 		{% if schedule.day == date() %}
-			{% set title = 'PLUGIN_QUANDO.TODAY'|t|capitalize %}
+			{% set title = 'PLUGIN_QUANDO.TODAY'|t|raw|capitalize %}
 			{% set classes = classes|merge( ['current'] ) %}
 			{% set classes = classes|merge( calendar.isAvailable ? ['open','on','started'] : ['closed','off','stopped'] ) %}
 		{% endif %}
@@ -30,7 +30,7 @@
 		{% set attr_title = ( title is null ? '' : ' title="' ~ title ~ '"' ) %}
 		{% set attr_class = ( classes is empty ? '' : ' class="' ~ classes|join(' ')|trim ~ '"' ) %}
 
-		{% set off_text = ( labels.off ?: 'PLUGIN_QUANDO.SERVICE_OFF' )|t %}
+		{% set off_text = ( labels.off ?: 'PLUGIN_QUANDO.SERVICE_OFF' )|t|raw %}
 		{% set windows_text = ( schedule.windows is empty ? off_text : transforms.niceWindows(calendar.formatSchedule(schedule.windows, 'g.ia', ['.i'])) ) %}
 
 		<tr{{ attr_title }}{{ attr_class }}>

@@ -28,15 +28,15 @@
 {% spaceless %}
 {% set hours_formatted = calendar.formatSchedule(service_status.schedule, 'g.ia', ['.i']) %}
 {% if service_status.available %} {# e.g. "open today o-s[, o-s]" #}
-	{{ (labels.available_today ?: 'PLUGIN_QUANDO.AVAILABLE_TODAY')|t }} {{ transforms.niceWindows(hours_formatted) }}
+	{{ (labels.available_today ?: 'PLUGIN_QUANDO.AVAILABLE_TODAY')|t|raw }}: {{ transforms.niceWindows(hours_formatted) }}
 {% else %}
 	{% if service_status.available_later_on_day -%} {# e.g. "open today o-s[,o-s]" #}
-		{{ 'PLUGIN_QUANDO.HOURS_TODAY'|t }} {{ transforms.niceWindows(hours_formatted) }}
+		{{ 'PLUGIN_QUANDO.HOURS_TODAY'|t|raw }}: {{ transforms.niceWindows(hours_formatted) }}
 	{% else %}
 		{% if service_status.until|date('Ymd') == 'now'|date_modify('+1 day')|date('Ymd') %} {# 'tomorrow' #}
-			{{ (labels.available_tomorrow ?: 'PLUGIN_QUANDO.AVAILABLE_TOMORROW')|t }} {{ service_status.until|date('g.ia')|replace({'.00':''}) }}
+			{{ (labels.available_tomorrow ?: 'PLUGIN_QUANDO.AVAILABLE_TOMORROW')|t|raw }}: {{ service_status.until|date('g.ia')|replace({'.00':''}) }}
 		{% else %} {# e.g. "next open [date, time]" #}
-			{{ (labels.available_next ?: 'PLUGIN_QUANDO.AVAILABLE_NEXT')|t }} {{ service_status.until|date('D jS, g.ia')|replace({'.00':''}) }} {# FIXME: this pattern isn't internationalised - try using the undocumented filter service_status.until|nicetime(true) #}
+			{{ (labels.available_next ?: 'PLUGIN_QUANDO.AVAILABLE_NEXT')|t|raw }}: {{ service_status.until|date('D jS, g.ia')|replace({'.00':''}) }} {# FIXME: this pattern isn't internationalised - try using the undocumented filter service_status.until|nicetime(true) #}
 		{% endif %}
 	{% endif %}
 {% endif %}
